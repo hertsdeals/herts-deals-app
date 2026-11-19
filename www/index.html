@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="format-detection" content="telephone=no">
+<title>Herts Deals</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--navy:#0D3B66;--red:#BC1B22;--ink:#1E293B;--text:#475569;--muted:#64748B;--line:#E2E8F0;--soft:#F5F5F5;--pill:#DBE2EA;--chip:#EEF2F7;--r:14px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#fff;overscroll-behavior:none}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,.prose{-webkit-user-select:text;user-select:text}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+h1,h2,h3,.serif{font-family:Caudex,Georgia,serif;font-weight:700;letter-spacing:0;color:var(--ink)}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.shell{position:relative;max-width:480px;height:100%;margin:0 auto;background:#fff;overflow:hidden}
+.view{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(84px + var(--sb));background:#fff;scrollbar-width:none}
+.view::-webkit-scrollbar{display:none}
+.view.detail{z-index:20;padding-bottom:calc(40px + var(--sb));animation:in .3s cubic-bezier(.2,.8,.2,1)}
+.view.detail.has-cta{padding-bottom:calc(110px + var(--sb))}
+.view.leaving{animation:out .22s ease forwards}
+@keyframes in{from{transform:translateX(100%)}}
+@keyframes out{to{transform:translateX(100%)}}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:calc(10px + var(--st)) 18px 10px;border-bottom:1px solid transparent}
+.bar.scrolled{border-color:var(--line)}
+.bar .logo{height:38px;width:auto}
+.bar h1{margin:0;font-size:22px}
+.townbtn{display:flex;align-items:center;gap:6px;border:1px solid var(--pill);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--navy);background:#fff}
+.townbtn svg.i{width:15px;height:15px}
+.iconbtn{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+
+/* hero */
+.intro{padding:14px 18px 6px}
+.intro h2{margin:0 0 6px;font-size:28px;line-height:1.15}
+.intro p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.search{margin:14px 18px 4px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;padding:12px 16px;color:var(--muted);font-size:14px;width:calc(100% - 36px);text-align:left;background:var(--soft)}
+.search input{flex:1;border:0;outline:0;background:none;font:inherit;font-size:15px;color:var(--ink);padding:0}
+
+/* sections */
+.sec{margin-top:30px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;padding:0 18px;margin-bottom:12px}
+.sh h3{margin:0;font-size:21px}
+.sh a,.sh button{font-size:13px;font-weight:600;color:var(--red)}
+.hs{display:flex;gap:14px;overflow-x:auto;padding:0 18px 4px;scroll-snap-type:x mandatory;scroll-padding-inline:18px;scrollbar-width:none}
+.hs::-webkit-scrollbar{display:none}
+.hs>*{scroll-snap-align:start;flex:none}
+
+/* deal card */
+.card{width:230px;display:block}
+.card .ph{position:relative;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;background:var(--chip)}
+.card .ph img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;left:10px;top:10px;background:var(--red);color:#fff;font-size:11px;font-weight:800;letter-spacing:.02em;padding:6px 9px;border-radius:999px;text-transform:uppercase}
+.star{position:absolute;right:10px;bottom:10px;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--red);display:grid;place-items:center;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.save{position:absolute;right:10px;top:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--ink)}
+.save svg.i{width:16px;height:16px}
+.save.on{color:var(--red)}
+.save.on svg.i{fill:var(--red)}
+.card .who{margin:10px 0 3px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card h4{margin:0 0 4px;font-size:14.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.where{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.where svg.i{width:13px;height:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 14px;padding:0 18px}
+.grid .card{width:auto}
+.grid .card h4{font-size:13.5px}
+
+/* rows */
+.rows{padding:0 18px}
+.row{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.row:last-child{border:0}
+.row .th{width:72px;height:72px;border-radius:12px;overflow:hidden;flex:none;background:var(--chip);position:relative}
+.row .th img{width:100%;height:100%;object-fit:cover}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-size:14.5px;font-weight:600;line-height:1.35;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row .tx span{font-size:12.5px;color:var(--muted)}
+.row .mini{display:inline-block;margin-top:5px;font-size:10.5px;font-weight:800;color:var(--red);letter-spacing:.03em}
+.chev{color:#94A3B8}
+
+/* pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--pill);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600;color:var(--navy);background:#fff}
+.pill em{font-style:normal;background:var(--chip);border-radius:999px;font-size:11.5px;padding:2px 7px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:0 18px 14px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--pill);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--navy);background:#fff}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* guide cards */
+.gcard{width:260px;display:block}
+.gcard .cv{aspect-ratio:16/10;border-radius:var(--r);overflow:hidden;background:var(--navy);position:relative;display:flex;align-items:flex-end;padding:14px}
+.gcard .cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gcard .cv.plain:after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:rgba(188,27,34,.55)}
+.gcard .cv span{position:relative;z-index:1;color:#fff;font-family:Caudex,serif;font-size:20px;font-weight:700;line-height:1.2}
+.gcard p{margin:10px 0 0;font-size:13px;color:var(--muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.glist .gcard{width:auto;margin:0 18px 24px}
+
+/* tab bar */
+.tabs{position:absolute;left:0;right:0;bottom:0;z-index:10;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:7px 4px calc(7px + var(--sb))}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;color:#94A3B8;padding:4px 10px;position:relative}
+.tab.on{color:var(--navy)}
+.tab.on svg.i{stroke-width:2.3}
+.tab i{position:absolute;top:0;right:8px;background:var(--red);color:#fff;font-style:normal;font-size:9px;min-width:15px;height:15px;border-radius:8px;display:grid;place-items:center;padding:0 3px}
+
+/* detail pages */
+.dtop{position:absolute;top:calc(10px + var(--st));left:14px;right:14px;display:flex;justify-content:space-between;z-index:3;pointer-events:none}
+.dtop>*{pointer-events:auto}
+.dtop .g{display:flex;gap:8px}
+.cb{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.12)}
+.cb.on{color:var(--red)}
+.cb.on svg.i{fill:var(--red)}
+.dimg{aspect-ratio:1/1;max-height:420px;width:100%;background:var(--chip);position:relative;overflow:hidden}
+.dimg img{width:100%;height:100%;object-fit:cover}
+.dimg .badge{left:18px;top:auto;bottom:18px;font-size:13px;padding:8px 12px}
+.dbody{padding:20px 18px 0}
+.dbody h1{margin:0 0 10px;font-size:26px;line-height:1.2}
+.kv{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:13px;margin-bottom:18px}
+.kv span{display:flex;align-items:center;gap:5px}
+.kv svg.i{width:15px;height:15px}
+.biz{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:var(--r);padding:12px;width:100%;text-align:left}
+.lg{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;background:#fff;flex:none;font-weight:800;color:var(--navy);font-size:15px}
+.lg img{width:100%;height:100%;object-fit:contain}
+.biz b{display:block;font-size:14.5px;font-weight:600}
+.biz span{font-size:12.5px;color:var(--muted)}
+.biz .chev{margin-left:auto}
+.blk{margin-top:26px}
+.blk h3{margin:0 0 10px;font-size:19px}
+.prose{color:var(--text);font-size:15px;line-height:1.65}
+.prose p{margin:0 0 12px}
+.clamp{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.more{color:var(--red);font-weight:600;font-size:14px;margin-top:-4px}
+.facts{border:1px solid var(--line);border-radius:var(--r);padding:2px 14px}
+.fact{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:flex-start}
+.fact:last-child{border:0}
+.fact svg.i{color:var(--navy);margin-top:1px}
+.fact b{display:block;font-weight:600;margin-bottom:2px}
+.fact span{color:var(--muted);font-size:13px;line-height:1.45}
+details.acc{border-top:1px solid var(--line)}
+details.acc:last-of-type{border-bottom:1px solid var(--line)}
+details.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:15px 0;font-weight:600;font-size:15px;cursor:pointer}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary svg.i{transition:transform .2s;color:var(--muted)}
+details.acc[open] summary svg.i{transform:rotate(180deg)}
+details.acc .prose{padding-bottom:14px;font-size:14px}
+.cta{position:absolute;left:0;right:0;bottom:0;z-index:25;background:#fff;border-top:1px solid var(--line);padding:12px 18px calc(12px + var(--sb))}
+.cta a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:700;font-size:15px;padding:15px;border-radius:999px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.obtn{flex:1;min-width:120px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--pill);border-radius:999px;padding:11px 12px;font-size:13.5px;font-weight:600;color:var(--navy)}
+.obtn svg.i{width:16px;height:16px}
+
+/* business & town heads */
+.bcover{height:200px;background:var(--navy);position:relative;overflow:hidden}
+.bcover img{width:100%;height:100%;object-fit:cover}
+.bcover.plain:after{content:"";position:absolute;right:-50px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(188,27,34,.5)}
+.bhead{padding:0 18px;margin-top:-34px;position:relative;z-index:2}
+.bhead .lg{width:72px;height:72px;border-radius:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);font-size:22px}
+.bhead h1{margin:12px 0 4px;font-size:26px;line-height:1.2}
+.bhead p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.tband{background:var(--navy);color:#fff;padding:calc(64px + var(--st)) 18px 26px;position:relative;overflow:hidden}
+.tband:after{content:"";position:absolute;right:-60px;bottom:-80px;width:220px;height:220px;border-radius:50%;background:rgba(188,27,34,.45)}
+.tband h1{color:#fff;margin:0 0 6px;font-size:30px;position:relative;z-index:1}
+.tband p{margin:0;opacity:.85;font-size:13.5px;position:relative;z-index:1}
+.tband + .tline{height:4px;background:var(--red)}
+
+/* guide article */
+.art{padding:0 18px}
+.art h2{font-size:22px;margin:28px 0 8px;line-height:1.25}
+.art h3{font-size:18px;margin:20px 0 4px;line-height:1.3;color:var(--navy)}
+.art p,.art li{color:var(--text);font-size:15px;line-height:1.65}
+.art p{margin:0 0 10px}
+.art ul{padding-left:20px;margin:0 0 12px}
+.art a{color:var(--navy);text-decoration:underline;text-underline-offset:2px}
+.art img{border-radius:var(--r);margin:10px 0}
+.art .evd{display:inline-block;margin:22px 0 0;background:var(--chip);color:var(--navy);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px}
+.art .evd + h3{margin-top:8px}
+.art .ev{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px 6px;margin:12px 0}
+.art .ev .evd{margin:0}
+.art .ev h3{margin:8px 0 4px;font-size:17px}
+.art .ev p{margin:0 0 6px;font-size:14px}
+.art .ev a{font-weight:600;text-decoration:none;color:var(--red)}
+
+/* misc */
+.ttl{padding:calc(14px + var(--st)) 18px 4px}
+.ttl h1{margin:0;font-size:30px}
+.ttl p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.lbl{padding:0 18px;margin:24px 0 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.empty{text-align:center;padding:60px 32px;color:var(--muted);font-size:14px;line-height:1.5}
+.empty b{display:block;font-family:Caudex,serif;font-size:20px;color:var(--ink);margin-bottom:6px}
+.scrim{position:absolute;inset:0;background:rgba(15,23,42,.4);z-index:40;animation:fi .2s}
+@keyframes fi{from{opacity:0}}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:41;background:#fff;border-radius:20px 20px 0 0;max-height:75%;overflow-y:auto;padding:8px 0 calc(16px + var(--sb));animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(100%)}}
+.grab{width:36px;height:4px;border-radius:2px;background:#CBD5E1;margin:4px auto 10px}
+.sheet h2{margin:0;padding:4px 20px 10px;font-size:21px}
+.opt{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 20px;font-size:15px;border-top:1px solid #F1F5F9}
+.opt.on{color:var(--red);font-weight:700}
+.toast{position:absolute;left:50%;bottom:calc(90px + var(--sb));transform:translateX(-50%);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;border-radius:999px;z-index:60;white-space:nowrap;animation:fi .2s}
+.loading{display:grid;place-items:center;height:100%;color:var(--muted)}
+.loading img{width:120px;margin-bottom:10px}
+.foot{padding:36px 18px 10px;text-align:center;font-size:12px;color:#94A3B8;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="shell" id="shell"><div id="root"><div class="loading"><div style="text-align:center"><img src="img/logo.png" alt="Herts Deals">Loading…</div></div></div><nav class="tabs" id="tabs"></nav></div>
+<script>
+(() => {
+const FEED = 'https://hertsdeals.co.uk/wp-json/hd/v1/app';
+const P = {
+  home:'M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM9 22V12h6v10', tag:'M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42ZM7.5 7.5h.01',
+  pin:'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0ZM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z', book:'M2 4h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2ZM22 4h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z',
+  heart:'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z',
+  search:'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.3-4.3', back:'M15 18l-6-6 6-6', down:'M6 9l6 6 6-6', right:'M9 18l6-6-6-6', check:'M20 6L9 17l-5-5',
+  share:'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13', ext:'M15 3h6v6M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
+  phone:'M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z',
+  globe:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z',
+  insta:'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5ZM16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37ZM17.5 6.5h.01',
+  map:'M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3ZM9 3v15M15 6v15', cal:'M8 2v4M16 2v4M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2ZM3 10h18',
+  badge:'M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76ZM9 12l2 2 4-4',
+  gift:'M20 12v10H4V12M2 7h20v5H2ZM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z',
+  user:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M22 11h-6', store:'M3 9l1-5h16l1 5M3 9v11h18V9M3 9h18M9 20v-6h6v6',
+  truck:'M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M15 18H9M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14M7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+  clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM12 6v6l4 2', x:'M18 6L6 18M6 6l12 12'
+};
+const ic = n => `<svg class="i" viewBox="0 0 24 24"><path d="${P[n]}"/></svg>`;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const paras = t => esc(t).split(/\r?\n\s*\r?\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${p.replace(/\r?\n/g,'<br>')}</p>`).join('');
+const store = { get(k,d){ try{ const v = localStorage.getItem('hd_'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem('hd_'+k, JSON.stringify(v)); }catch(e){} } };
+
+const FEAT = {
+  375:['badge','Exclusive to Herts Deals','You won’t find this offer anywhere else.'],
+  385:['gift','Complimentary perk','A free extra, gift or upgrade.'],
+  384:['user','New customers only','An introductory offer for first-time customers.'],
+  382:['cal','Booking required','Book in advance and mention Herts Deals.'],
+  377:['store','In-person redemption','Show this deal on your phone when you visit.'],
+  387:['globe','Online only','Redeemed through the business’s website.'],
+  386:['clock','Selected days','Only available on certain days or times.'],
+  383:['truck','Mobile service','The business comes to you.']
+};
+const REDEEM = { online:'Use the code or link on the business’s website.', booking:'Book with the business and mention Herts Deals.', instore:'Show this deal on your phone when you visit.', automatic:'Applied automatically when you book or visit.', other:'See the full details on the deal page.' };
+const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+
+let D, towns, cats, cos, deals, dealById, guides;
+let saved = new Set(store.get('saved', []));
+let townSel = store.get('town', 0);
+let tab = 'home', dealCat = 0;
+
+function index(data){
+  D = data;
+  towns = Object.fromEntries(D.towns.map(t => [t.id, t]));
+  cats = Object.fromEntries(D.categories.map(c => [c.id, c]));
+  cos = Object.fromEntries(D.companies.filter(c => c.towns.length).map(c => [c.id, c]));
+  const bySlug = Object.fromEntries(Object.values(cos).map(c => [c.slug, c.id]));
+  deals = D.deals.map(d => {
+    let cid = cos[d.company] ? d.company : bySlug[d.slug.replace(/-deal(-\d+)?$/, '')];
+    const title = (/[a-z]/.test(d.title) ? d.title : d.title.charAt(0) + d.title.slice(1).toLowerCase());
+    const top = d.cats.map(c => cats[c]).filter(Boolean);
+    const parent = (top.find(c => !c.parent) || (top[0] && cats[top[0].parent]) || {}).id || 0;
+    const sub = top.find(c => c.parent);
+    return {...d, title, co: cos[cid] || null, parent, sub};
+  }).filter(d => d.co);
+  dealById = Object.fromEntries(deals.map(d => [d.id, d]));
+  guides = (D.guides || []).filter(g => g.html && g.html.length > 400);
+}
+const tn = ids => ids.map(i => towns[i] && towns[i].name).filter(Boolean).join(' & ');
+const inTown = d => !townSel || d.towns.includes(townSel);
+const liveTowns = () => D.towns.filter(t => t.parent && deals.some(d => d.towns.includes(t.id))).sort((a,b) => a.name.localeCompare(b.name));
+const initials = n => n.replace(/[^A-Za-z0-9 ]/g,'').split(/\s+/).filter(w => w && !/^(the|and|ltd)$/i.test(w)).slice(0,2).map(w => w[0]).join('').toUpperCase();
+const logo = c => `<span class="lg">${c.logo ? `<img src="${esc(c.logo)}" alt="" loading="lazy">` : initials(c.name)}</span>`;
+const saveBtn = (id, cls='save') => `<span role="button" aria-label="Save" class="${cls} ${saved.has(id)?'on':''}" data-save="${id}">${ic('heart')}</span>`;
+
+/* ----- components ----- */
+const card = d => `<a class="card" href="#deal-${d.id}">
+  <div class="ph">${d.image ? `<img src="${esc(d.image)}" alt="" loading="lazy">` : ''}${d.badge ? `<span class="badge">${esc(d.badge)}</span>` : ''}${saveBtn(d.id)}${d.features.includes(375) ? '<span class="star">★</span>' : ''}</div>
+  <div class="who">${esc(d.co.name)}</div><h4>${esc(d.title)}</h4><div class="where">${ic('pin')}${esc(tn(d.towns))}</div></a>`;
+const row = d => `<a class="row" href="#deal-${d.id}"><span class="th">${d.image ? `<img src="${esc(d.image)}" alt="" loading="lazy">` : ''}</span>
+  <span class="tx"><b>${esc(d.title)}</b><span>${esc(d.co.name)} · ${esc(tn(d.towns))}</span>${d.badge ? `<br><span class="mini">${esc(d.badge)}</span>` : ''}</span>${ic('right').replace('class="i"','class="i chev"')}</a>`;
+const gcard = g => { const img = g.image || (g.html.match(/<img src="([^"]+)"/) || [])[1]; return `<a class="gcard" href="#guide-${g.id}"><div class="cv ${img?'':'plain'}">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ''}<span>${esc(g.title)}</span></div><p>${esc(g.excerpt || 'Hand-picked deals from local independents.')}</p></a>`; };
+const sec = (title, inner, more='') => `<section class="sec"><div class="sh"><h3>${title}</h3>${more}</div>${inner}</section>`;
+const topbar = right => `<header class="bar"><img class="logo" src="${esc(D.logo)}" alt="Herts Deals">${right}</header>`;
+const townBtn = () => `<button class="townbtn" data-act="town">${ic('pin')}${esc(townSel ? towns[townSel].name : 'All of Herts')}${ic('down')}</button>`;
+
+/* ----- tabs ----- */
+function Home(){
+  const v = deals.filter(inTown);
+  const featured = [...v].sort((a,b) => (b.features.includes(375) - a.features.includes(375)) || (b.date > a.date ? 1 : -1)).slice(0,6);
+  const latest = [...v].sort((a,b) => b.date > a.date ? 1 : -1).slice(0,5);
+  const place = townSel ? towns[townSel].name : 'Hertfordshire';
+  return `${topbar(townBtn())}
+  <div class="intro"><h2>Discover independent ${esc(place)}</h2><p>Local deals, towns and guides, all in one place.</p></div>
+  <button class="search" data-go="search">${ic('search')} Search deals, businesses and towns</button>
+  ${v.length ? sec(townSel ? `Deals in ${esc(place)}` : 'Featured deals', `<div class="hs">${featured.map(card).join('')}</div>`, `<a href="#deals">See all</a>`) : `<div class="empty"><b>No deals here yet</b>We add new businesses every week. Try another town.</div>`}
+  ${townSel ? townTeaser(towns[townSel]) : sec('Explore by town', `<div class="hs" style="gap:8px">${liveTowns().map(t => `<a class="pill" href="#town-${t.id}">${esc(t.name)}</a>`).join('')}</div>`, `<a href="#towns">All towns</a>`)}
+  ${guides.length ? sec('Guides', `<div class="hs">${guides.map(gcard).join('')}</div>`, `<a href="#guides">All guides</a>`) : ''}
+  ${latest.length ? sec('Just added', `<div class="rows">${latest.map(row).join('')}</div>`) : ''}
+  <div class="foot">Herts Deals · independent Hertfordshire businesses only.<br>Book direct, no vouchers to buy.</div>`;
+}
+function townTeaser(t){
+  const first = (t.intro || '').split(/\n\s*\n/)[0];
+  return sec(`About ${esc(t.name)}`, `<div style="padding:0 18px"><p class="prose" style="margin:0 0 12px">${esc(first)}</p><a class="obtn" href="#town-${t.id}" style="display:inline-flex;flex:none">${esc(t.name)} guide ${ic('right')}</a></div>`);
+}
+function Deals(){
+  const v = deals.filter(inTown);
+  const ps = [...new Set(v.map(d => d.parent))].filter(Boolean).map(id => cats[id]).sort((a,b) => a.name.localeCompare(b.name));
+  if (dealCat && !ps.some(p => p.id === dealCat)) dealCat = 0;
+  const list = dealCat ? v.filter(d => d.parent === dealCat) : v;
+  return `${topbar(townBtn())}<div class="ttl" style="padding-top:6px"><h1>Deals</h1><p>${list.length} offer${list.length===1?'':'s'} ${townSel ? 'in ' + esc(towns[townSel].name) : 'across Hertfordshire'}</p></div>
+  <div class="chips" style="margin-top:14px"><button class="chip ${!dealCat?'on':''}" data-cat="0">All</button>${ps.map(p => `<button class="chip ${dealCat===p.id?'on':''}" data-cat="${p.id}">${esc(p.name)}</button>`).join('')}</div>
+  ${list.length ? `<div class="grid">${list.map(card).join('')}</div>` : `<div class="empty"><b>No deals here yet</b>Try another town or category.</div>`}`;
+}
+function Towns(){
+  const groups = {};
+  liveTowns().forEach(t => (groups[t.parent] = groups[t.parent] || []).push(t));
+  return `<div class="ttl"><h1>Towns</h1><p>Local guides and deals for every town.</p></div>
+  ${Object.entries(groups).sort((a,b) => towns[a[0]].name.localeCompare(towns[b[0]].name)).map(([pid, ts]) => `<div class="lbl">${esc(towns[pid].name)}</div><div class="rows">${ts.map(t => {
+    const n = deals.filter(d => d.towns.includes(t.id)).length;
+    return `<a class="row" href="#town-${t.id}"><span class="tx"><b class="serif" style="font-size:17px">${esc(t.name)}</b><span>${n} deal${n===1?'':'s'}${t.guide ? ' · Local guide' : ''}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`; }).join('')}</div>`).join('')}`;
+}
+function Guides(){
+  return `<div class="ttl"><h1>Guides</h1><p>What’s on and where to go in Hertfordshire.</p></div><div class="glist" style="margin-top:18px">${guides.map(gcard).join('')}</div>`;
+}
+function Saved(){
+  const ds = [...saved].map(id => dealById[id]).filter(Boolean);
+  return `<div class="ttl"><h1>Saved</h1><p>${ds.length ? `${ds.length} saved deal${ds.length===1?'':'s'}` : 'Deals you save appear here'}</p></div>
+  ${ds.length ? `<div class="rows" style="margin-top:8px">${ds.map(row).join('')}</div>` : `<div class="empty"><b>Nothing saved yet</b>Tap the heart on a deal to keep it for later.</div>`}`;
+}
+function Search(){
+  return `<div class="ttl" style="padding-bottom:0"><h1>Search</h1></div>
+  <label class="search" style="cursor:text">${ic('search')}<input id="q" type="search" placeholder="Try “pilates”, “Ware” or “free”" autocomplete="off" enterkeyhint="search"></label>
+  <div id="res"></div>`;
+}
+function runSearch(q){
+  const el = document.getElementById('res'); if (!el) return;
+  q = q.trim().toLowerCase();
+  if (!q) { el.innerHTML = ''; return; }
+  const w = q.split(/\s+/);
+  const hit = s => w.every(x => s.toLowerCase().includes(x));
+  const ds = deals.filter(d => hit([d.title, d.co.name, tn(d.towns), d.sub ? d.sub.name : '', cats[d.parent] ? cats[d.parent].name : '', d.details].join(' ')));
+  const ts = liveTowns().filter(t => t.name.toLowerCase().includes(q));
+  const gs = guides.filter(g => hit(g.title + ' ' + g.excerpt));
+  el.innerHTML = (ts.length ? `<div class="lbl">Towns</div><div class="pills">${ts.map(t => `<a class="pill" href="#town-${t.id}">${esc(t.name)}</a>`).join('')}</div>` : '')
+    + (gs.length ? `<div class="lbl">Guides</div><div class="rows">${gs.map(g => `<a class="row" href="#guide-${g.id}"><span class="tx"><b>${esc(g.title)}</b></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>` : '')
+    + (ds.length ? `<div class="lbl">Deals</div><div class="rows">${ds.map(row).join('')}</div>` : '')
+    + (!ts.length && !gs.length && !ds.length ? `<div class="empty"><b>No results</b>Try another word, a town or a type of business.</div>` : '');
+}
+
+/* ----- detail pages ----- */
+function DealPage(d){
+  const c = d.co;
+  const f = d.features.filter(k => FEAT[k]);
+  const days = (d.days || []).filter(Boolean);
+  const more = deals.filter(x => x.id !== d.id && x.towns.some(t => d.towns.includes(t))).slice(0,8);
+  const season = d.type === 'seasonal' && d.season && d.season.end ? `Until ${fmtDate(d.season.end)}` : '';
+  return `<div class="view detail has-cta" data-detail>
+  <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><div class="g"><button class="cb" data-share="${esc(d.link)}" aria-label="Share">${ic('share')}</button><button class="cb ${saved.has(d.id)?'on':''}" data-save="${d.id}" aria-label="Save">${ic('heart')}</button></div></div>
+  <div class="dimg">${d.image ? `<img src="${esc(d.image)}" alt="">` : ''}${d.badge ? `<span class="badge">${esc(d.badge)}</span>` : ''}</div>
+  <div class="dbody">
+    <h1>${esc(d.title)}</h1>
+    <div class="kv"><span>${ic('pin')}${esc(tn(d.towns))}</span>${d.sub ? `<span>${ic('tag')}${esc(d.sub.name)}</span>` : ''}${season ? `<span>${ic('clock')}${season}</span>` : ''}</div>
+    <a class="biz" href="#biz-${c.id}">${logo(c)}<div><b>${esc(c.name)}</b><span>${esc(c.tagline || 'Independent business in ' + tn(c.towns))}</span></div>${ic('right').replace('class="i"','class="i chev"')}</a>
+    ${d.details ? `<div class="blk"><h3>The offer</h3><div class="prose clamp" id="dd">${paras(d.details)}</div><button class="more" data-more="dd">Read more</button></div>` : ''}
+    <div class="blk"><h3>How to claim</h3><div class="facts">
+      <div class="fact">${ic('check')}<div><b>${esc(REDEEM[d.redeem] || REDEEM.other)}</b>${d.booking ? `<span>${esc(d.booking)}</span>` : ''}</div></div>
+      ${days.length && days.length < 7 ? `<div class="fact">${ic('cal')}<div><b>Available</b><span>${days.map(x => x.charAt(0).toUpperCase() + x.slice(1,3)).join(', ')}</span></div></div>` : ''}
+      ${f.map(k => `<div class="fact">${ic(FEAT[k][0])}<div><b>${FEAT[k][1]}</b><span>${FEAT[k][2]}</span></div></div>`).join('')}
+    </div></div>
+    ${d.terms ? `<div class="blk"><details class="acc"><summary>Terms and conditions ${ic('down')}</summary><div class="prose">${paras(d.terms)}</div></details></div>` : ''}
+  </div>
+  ${more.length ? sec(`More in ${esc(tn(d.towns))}`, `<div class="hs">${more.map(card).join('')}</div>`) : ''}
+  </div>
+  <div class="cta" data-cta><a href="${esc(d.link)}" target="_blank" rel="noopener">Get this deal ${ic('ext')}</a></div>`;
+}
+function BizPage(c){
+  const ds = deals.filter(d => d.co.id === c.id);
+  const cover = c.image || c.gallery[0] || (ds[0] && ds[0].image);
+  const sub = c.cats.map(x => cats[x]).filter(x => x && x.parent).map(x => x.name);
+  const maps = c.address ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(c.name + ' ' + c.address) : '';
+  return `<div class="view detail" data-detail>
+  <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><button class="cb" data-share="${esc(c.link)}" aria-label="Share">${ic('share')}</button></div>
+  <div class="bcover ${cover?'':'plain'}">${cover ? `<img src="${esc(cover)}" alt="">` : ''}</div>
+  <div class="bhead">${logo(c)}<h1>${esc(c.name)}</h1><p>${esc(c.tagline || '')}</p>
+    <div class="kv" style="margin:10px 0 0"><span>${ic('pin')}${esc(tn(c.towns))}</span>${sub.length ? `<span>${ic('tag')}${esc(sub.join(', '))}</span>` : ''}</div></div>
+  <div class="dbody">
+    <div class="btnrow">${c.phone ? `<a class="obtn" href="tel:${esc(c.phone.replace(/\s/g,''))}">${ic('phone')}Call</a>` : ''}${c.website ? `<a class="obtn" href="${esc(c.website)}" target="_blank" rel="noopener">${ic('globe')}Website</a>` : ''}${maps ? `<a class="obtn" href="${esc(maps)}" target="_blank" rel="noopener">${ic('map')}Directions</a>` : ''}${c.instagram ? `<a class="obtn" href="${esc(c.instagram)}" target="_blank" rel="noopener">${ic('insta')}Instagram</a>` : ''}</div>
+    ${ds.length ? `<div class="blk"><h3>Deals</h3></div>` : ''}
+  </div>
+  ${ds.length ? `<div class="rows">${ds.map(row).join('')}</div>` : ''}
+  <div class="dbody">
+    ${c.bio ? `<div class="blk"><h3>About</h3><div class="prose clamp" id="bb">${paras(c.bio)}</div><button class="more" data-more="bb">Read more</button></div>` : ''}
+    ${c.gallery.length ? `<div class="blk"><h3>Photos</h3></div>` : ''}
+  </div>
+  ${c.gallery.length ? `<div class="hs">${c.gallery.map(g => `<img src="${esc(g)}" alt="" loading="lazy" style="width:220px;height:165px;object-fit:cover;border-radius:14px">`).join('')}</div>` : ''}
+  <div class="dbody">
+    ${c.address ? `<div class="blk"><h3>Find them</h3><p class="prose" style="margin:0">${esc(c.address)}</p></div>` : ''}
+    <div class="blk"><a class="obtn" href="${esc(c.link)}" target="_blank" rel="noopener" style="display:flex">Full profile and opening hours ${ic('ext')}</a></div>
+  </div></div>`;
+}
+function TownPage(t){
+  const ds = deals.filter(d => d.towns.includes(t.id));
+  const bizs = Object.values(cos).filter(c => c.towns.includes(t.id));
+  const sections = [];
+  if (t.guide) {
+    const parts = t.guide.split(/<h3[^>]*>/).slice(1);
+    parts.forEach(p => { const [h, ...rest] = p.split('</h3>'); sections.push([h.replace(/<[^>]+>/g,''), rest.join('</h3>')]); });
+  }
+  return `<div class="view detail" data-detail>
+  <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><button class="cb" data-share="${esc(t.link)}" aria-label="Share">${ic('share')}</button></div>
+  <div class="tband"><h1>${esc(t.name)}</h1><p>${esc(towns[t.parent] ? towns[t.parent].name : 'Hertfordshire')} · ${ds.length} deal${ds.length===1?'':'s'} · ${bizs.length} business${bizs.length===1?'':'es'}</p></div><div class="tline"></div>
+  ${t.intro ? `<div class="dbody"><div class="prose">${paras(t.intro)}</div></div>` : ''}
+  ${ds.length ? sec(`Deals in ${esc(t.name)}`, `<div class="hs">${ds.map(card).join('')}</div>`) : ''}
+  ${sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${sections.map(([h, b], i) => `<details class="acc" ${i===0?'open':''}><summary>${esc(h)} ${ic('down')}</summary><div class="prose art" style="padding-left:0;padding-right:0">${b}</div></details>`).join('')}</div>`) : ''}
+  ${bizs.length ? sec('Local businesses', `<div class="rows">${bizs.map(c => `<a class="row" href="#biz-${c.id}">${logo(c)}<span class="tx"><b>${esc(c.name)}</b><span>${esc(c.tagline || '')}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>`) : ''}
+  </div>`;
+}
+function cleanGuide(g){
+  let h = g.html.replace(/<!--[\s\S]*?-->/g, '');
+  const t = g.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  h = h.replace(new RegExp('^\\s*' + t + '\\s*'), '');
+  h = h.replace(/<a href="#[^"]*">[^<]*<\/a>/g, '');
+  h = h.replace(/<a href="[^"]+\.(jpe?g|png|webp)"><\/a>/gi, '').replace(/<a [^>]*><\/a>/g, '');
+  const date = '((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]* \\d{1,2}(?:\\s*(?:-|–|to|&)\\s*\\d{1,2})? [A-Z][a-z]{2,8}[^<]{0,40})';
+  h = h.replace(new RegExp('(</a>)\\s*' + date + '\\s*</p>', 'g'), '$1</p><span class="evd">$2</span>');
+  h = h.replace(new RegExp('<p>\\s*' + date + '\\s*</p>', 'g'), '<span class="evd">$1</span>');
+  h = h.replace(/<p>\s*(<br\s*\/?>\s*)*<\/p>/g, '').replace(/<h2>\s*<\/h2>/g, '');
+  // Deal links become in-app deal cards
+  const box = document.createElement('div'); box.innerHTML = h;
+  const slugs = []; box.querySelectorAll('a[href*="/deal/"]').forEach(a => { const m = a.getAttribute('href').match(/\/deal\/([^/]+)/); if (m && !slugs.includes(m[1])) slugs.push(m[1]); });
+  const linked = slugs.map(s => deals.find(d => d.slug === s)).filter(Boolean);
+  if (linked.length >= 3) {
+    box.querySelectorAll('h3').forEach(x => { if (x.querySelector('a[href*="/deal/"]')) { const n = x.nextElementSibling; if (n && n.tagName === 'P' && n.textContent.trim().length < 40) n.remove(); x.remove(); } });
+  }
+  const listOnly = linked.length >= 3 && box.textContent.replace(/\s+/g,' ').length < 1500;
+  const today = new Date(); today.setHours(0,0,0,0);
+  box.querySelectorAll('span.evd').forEach(s => {
+    const ev = document.createElement('div'); ev.className = 'ev'; s.before(ev);
+    let n = s; while (n && !(n !== s && n.nodeType === 1 && (n.matches('span.evd') || n.tagName === 'H2'))) { const nx = n.nextSibling; ev.appendChild(n); n = nx; }
+    const m = s.textContent.match(/(\d{1,2})(?:\s*(?:-|–|to|&)\s*(\d{1,2}))? ([A-Z][a-z]{2})/);
+    if (m) { const mi = 'JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(m[3]) / 3; if (mi >= 0) { let y = today.getFullYear(); if (mi < today.getMonth() - 6) y++; const end = new Date(y, mi, +(m[2] || m[1])); if (end < today) ev.remove(); } }
+  });
+  box.querySelectorAll('h2').forEach(h => { let n = h.nextElementSibling; while (n && n.tagName === 'P' && !n.textContent.trim()) n = n.nextElementSibling; if (!n || n.tagName === 'H2') h.remove(); });
+  box.querySelectorAll('a[href^="https://hertsdeals.co.uk/location/"],a[href^="/location/"]').forEach(a => { const s = a.getAttribute('href').match(/location\/([^/]+)/); const t = s && D.towns.find(x => x.slug === s[1]); if (t) a.setAttribute('href', '#town-' + t.id); });
+  box.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  return { html: box.innerHTML, linked, listOnly };
+}
+function GuidePage(g){
+  const { html, linked, listOnly } = cleanGuide(g);
+  const img = g.image || (g.html.match(/<img src="([^"]+)"/) || [])[1];
+  return `<div class="view detail" data-detail>
+  <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><button class="cb" data-share="${esc(g.link)}" aria-label="Share">${ic('share')}</button></div>
+  <div class="tband"><h1>${esc(g.title)}</h1><p>${esc(g.excerpt || 'Hand-picked deals from local independents.')}</p></div><div class="tline"></div>
+  ${listOnly ? '' : `<div class="art" style="margin-top:8px">${html}</div>`}
+  ${linked.length ? (listOnly ? '' : sec('Deals in this guide', '')) + `<div class="grid" style="margin-top:${listOnly ? 22 : 0}px">${linked.map(card).join('')}</div>` : ''}
+  </div>`;
+}
+const fmtDate = s => { s = String(s); if (!/^\d{8}$/.test(s)) return s; const dt = new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8)); return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }); };
+
+/* ----- router ----- */
+const root = document.getElementById('root');
+let detail = false;
+function renderTab(){
+  const html = ({home:Home, deals:Deals, towns:Towns, guides:Guides, saved:Saved, search:Search}[tab] || Home)();
+  root.querySelector('.view[data-tab]')?.remove();
+  const v = document.createElement('div'); v.className = 'view'; v.dataset.tab = tab; v.innerHTML = html;
+  root.prepend(v);
+  v.addEventListener('scroll', () => v.querySelector('.bar')?.classList.toggle('scrolled', v.scrollTop > 4), { passive:true });
+  if (tab === 'search') { const q = document.getElementById('q'); q.addEventListener('input', e => runSearch(e.target.value)); setTimeout(() => q.focus(), 50); }
+  renderTabs();
+}
+function renderTabs(){
+  const t = [['home','home','Home'],['deals','tag','Deals'],['towns','pin','Towns'],['guides','book','Guides'],['saved','heart','Saved']];
+  document.getElementById('tabs').innerHTML = t.map(([k,i,l]) => `<button class="tab ${tab===k?'on':''}" data-go="${k}">${ic(i)}${l}${k==='saved'&&saved.size?`<i>${saved.size}</i>`:''}</button>`).join('');
+}
+function openDetail(html){ root.querySelectorAll('[data-detail],[data-cta]').forEach(e => e.remove()); root.insertAdjacentHTML('beforeend', html); detail = true; }
+function closeDetail(){ root.querySelectorAll('[data-cta]').forEach(e => e.remove()); const v = root.querySelector('[data-detail]'); if (v) { v.classList.add('leaving'); setTimeout(() => v.remove(), 220); } detail = false; }
+function route(){
+  const h = location.hash.slice(1); let m;
+  if ((m = h.match(/^deal-(\d+)$/)) && dealById[m[1]]) return openDetail(DealPage(dealById[m[1]]));
+  if ((m = h.match(/^biz-(\d+)$/)) && cos[m[1]]) return openDetail(BizPage(cos[m[1]]));
+  if ((m = h.match(/^town-(\d+)$/)) && towns[m[1]]) return openDetail(TownPage(towns[m[1]]));
+  if ((m = h.match(/^guide-(\d+)$/))) { const g = guides.find(x => x.id === +m[1]); if (g) return openDetail(GuidePage(g)); }
+  const k = ['home','deals','towns','guides','saved','search'].includes(h) ? h : 'home';
+  if (k !== tab || !root.querySelector('.view[data-tab]')) { tab = k; renderTab(); }
+  if (detail) closeDetail();
+}
+function toast(m){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.getElementById('shell').appendChild(t); setTimeout(() => t.remove(), 1700); }
+function townSheet(){
+  const s = document.createElement('div'); s.id = 'sheet';
+  const ts = liveTowns();
+  s.innerHTML = `<div class="scrim" data-act="close"></div><div class="sheet"><div class="grab"></div><h2>Choose your town</h2>
+    <button class="opt ${!townSel?'on':''}" data-town="0">All of Hertfordshire ${!townSel?ic('check'):''}</button>
+    ${ts.map(t => `<button class="opt ${townSel===t.id?'on':''}" data-town="${t.id}">${esc(t.name)} ${townSel===t.id?ic('check'):''}</button>`).join('')}</div>`;
+  document.getElementById('shell').appendChild(s);
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-save],[data-go],[data-act],[data-town],[data-cat],[data-share],[data-more]'); if (!el) return;
+  if (el.dataset.save) { e.preventDefault(); e.stopPropagation(); const id = +el.dataset.save;
+    saved.has(id) ? (saved.delete(id), toast('Removed from Saved')) : (saved.add(id), toast('Saved'));
+    store.set('saved', [...saved]); document.querySelectorAll(`[data-save="${id}"]`).forEach(b => b.classList.toggle('on', saved.has(id))); renderTabs();
+    if (tab === 'saved' && !detail) renderTab(); return; }
+  if (el.dataset.share) { const url = el.dataset.share;
+    if (window.hdNative && hdNative.share) hdNative.share(url); else if (navigator.share) navigator.share({ url }).catch(() => {}); else navigator.clipboard?.writeText(url).then(() => toast('Link copied')); return; }
+  if (el.dataset.more) { const b = document.getElementById(el.dataset.more); b.classList.remove('clamp'); el.remove(); return; }
+  if (el.dataset.go) { location.hash = el.dataset.go; return; }
+  if (el.dataset.cat !== undefined) { dealCat = +el.dataset.cat; renderTab(); return; }
+  if (el.dataset.town !== undefined) { townSel = +el.dataset.town; store.set('town', townSel); document.getElementById('sheet')?.remove(); renderTab(); return; }
+  if (el.dataset.act === 'town') townSheet();
+  if (el.dataset.act === 'close') document.getElementById('sheet')?.remove();
+  if (el.dataset.act === 'back') { if (history.state && history.state.n || sessionStorage.getItem('hd_nav')) history.back(); else location.hash = tab; }
+});
+window.addEventListener('hashchange', () => { try { sessionStorage.setItem('hd_nav','1'); } catch(e){} route(); });
+
+function start(data){ window.hdNative && hdNative.ready(); index(data); const h = location.hash.slice(1); if (['deals','towns','guides','saved','search'].includes(h)) tab = h; renderTab(); route(); }
+const cached = store.get('feed', null);
+if (cached) start(cached);
+fetch(FEED, { credentials:'omit' }).then(r => r.json()).then(data => {
+  store.set('feed', data);
+  if (!cached) start(data); else if (data.generated !== cached.generated) { index(data); if (!detail) renderTab(); }
+}).catch(() => { if (cached) return;
+  fetch('feed.json').then(r => r.json()).then(start).catch(() => { window.hdNative && hdNative.ready(); root.innerHTML = '<div class="empty"><b>You’re offline</b>Connect to the internet to load local deals.</div>'; }); });
+window.hdApp = { isDetail: () => !!detail, closeSheet: () => { const s = document.getElementById('sheet'); if (s) { s.remove(); return true; } return false; }, tab: () => tab };
+})();
+</script>
+<script src="native.js"></script>
+</body>
+</html>

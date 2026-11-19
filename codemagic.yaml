@@ -1,0 +1,83 @@
+# Codemagic builds for the Herts Deals app.
+# "Android test build" works straight away and produces an APK you can install on an Android phone.
+# The store workflows need the Apple / Google publishing keys adding in Codemagic first (see README).
+
+workflows:
+  android-test:
+    name: Android test build
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      node: 22
+      java: 21
+    scripts:
+      - name: Install
+        script: npm ci
+      - name: Bundle the latest deals (used if the phone is offline on first open)
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Sync web code into Android
+        script: npx cap sync android
+      - name: Build APK
+        script: cd android && ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/**/*.apk
+
+  android-release:
+    name: Android release (Google Play)
+    instance_type: mac_mini_m2
+    max_build_duration: 40
+    environment:
+      node: 22
+      java: 21
+      android_signing:
+        - herts_deals_upload_key        # add in Codemagic > Code signing identities
+      groups:
+        - google_play                   # GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+    scripts:
+      - name: Install
+        script: npm ci
+      - name: Bundle the latest deals
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Sync web code into Android
+        script: npx cap sync android
+      - name: Build app bundle
+        script: cd android && ./gradlew bundleRelease -PversionCode=$BUILD_NUMBER
+    artifacts:
+      - android/app/build/outputs/bundle/**/*.aab
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+
+  ios-release:
+    name: iPhone release (TestFlight)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: Herts Deals    # add in Codemagic > Team integrations
+    environment:
+      node: 22
+      xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: uk.co.hertsdeals.app
+    scripts:
+      - name: Install
+        script: npm ci
+      - name: Bundle the latest deals
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Sync web code into iOS
+        script: npx cap sync ios
+      - name: Signing
+        script: xcode-project use-profiles
+      - name: Build number
+        script: cd ios/App && agvtool new-version -all $BUILD_NUMBER
+      - name: Build IPA
+        script: xcode-project build-ipa --project ios/App/App.xcodeproj --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
