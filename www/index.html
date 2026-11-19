@@ -282,7 +282,7 @@ const row = d => `<a class="row" href="#deal-${d.id}"><span class="th">${d.image
   <span class="tx"><b>${esc(d.title)}</b><span>${esc(d.co.name)} · ${esc(tn(d.towns))}</span>${d.badge ? `<br><span class="mini">${esc(d.badge)}</span>` : ''}</span>${ic('right').replace('class="i"','class="i chev"')}</a>`;
 const gcard = g => { const img = g.image || (g.html.match(/<img src="([^"]+)"/) || [])[1]; return `<a class="gcard" href="#guide-${g.id}"><div class="cv ${img?'':'plain'}">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ''}<span>${esc(g.title)}</span></div><p>${esc(g.excerpt || 'Hand-picked deals from local independents.')}</p></a>`; };
 const sec = (title, inner, more='') => `<section class="sec"><div class="sh"><h3>${title}</h3>${more}</div>${inner}</section>`;
-const topbar = right => `<header class="bar"><img class="logo" src="${esc(D.logo)}" alt="Herts Deals">${right}</header>`;
+const topbar = right => `<header class="bar"><img class="logo" src="img/logo.png" alt="Herts Deals">${right}</header>`;
 const townBtn = () => `<button class="townbtn" data-act="town">${ic('pin')}${esc(townSel ? towns[townSel].name : 'All of Herts')}${ic('down')}</button>`;
 
 /* ----- tabs ----- */
