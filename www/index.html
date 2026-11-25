@@ -510,7 +510,12 @@ function TownPage(t){
   <div class="tband"><h1>${esc(t.name)}</h1><p>${esc(towns[t.parent] ? towns[t.parent].name : 'Hertfordshire')} · ${ds.length} deal${ds.length===1?'':'s'} · ${bizs.length} business${bizs.length===1?'':'es'}</p></div><div class="tline"></div>
   ${t.intro ? `<div class="dbody"><div class="prose">${paras(t.intro)}</div></div>` : ''}
   ${ds.length ? sec(`Deals in ${esc(t.name)}`, `<div class="hs">${ds.map(card).join('')}</div>`) : `<p class="note" style="margin-top:18px">No deals in ${esc(t.name)} yet. Add it to your towns in My Herts and we’ll let you know when the first one arrives.</p>`}
-  ${sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${sections.map(([h, b], i) => `<details class="acc" ${i===0?'open':''}><summary>${esc(h)} ${ic('down')}</summary><div class="prose art" style="padding-left:0;padding-right:0">${b}</div></details>`).join('')}</div>`) : ''}
+  ${sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${sections.map(([h, b], i) => `<details class="acc" ${i===0?'open':''}><summary>${esc(h)} ${ic('down')}</summary><div class="prose art" style="padding-left:0;padding-right:0">${b}</div>${/parking|getting there/i.test(h) ? `<a class="obtn" href="${esc(t.link)}#parking" target="_blank" rel="noopener" style="display:flex;margin:4px 0 14px">Every car park, price and pay-by-app code ${ic('ext')}</a>` : ''}</details>`).join('')}</div>`) : ''}
+  ${sec(sections.length ? `More about ${esc(t.name)}` : `${esc(t.name)} guide`, `<div class="dbody" style="padding-top:0;display:grid;gap:10px">
+    <a class="obtn" href="${esc(t.link)}#parking" target="_blank" rel="noopener" style="display:flex">Parking, prices and getting there ${ic('ext')}</a>
+    <a class="obtn" href="${esc(t.link)}#guide" target="_blank" rel="noopener" style="display:flex">Markets, shops and places to visit ${ic('ext')}</a>
+    <a class="obtn" href="${esc(t.link)}#faqs" target="_blank" rel="noopener" style="display:flex">Questions about ${esc(t.name)} ${ic('ext')}</a>
+    <p class="note" style="margin:0">Opens the full ${esc(t.name)} page on hertsdeals.co.uk.</p></div>`)}
   ${bizs.length ? sec('Local businesses', `<div class="rows">${bizs.map(c => `<a class="row" href="#biz-${c.id}">${logo(c)}<span class="tx"><b>${esc(c.name)}</b><span>${esc(c.tagline || '')}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>`) : ''}
   </div>`;
 }
