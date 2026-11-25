@@ -137,7 +137,7 @@ function hd_push_wait() {
 	return max( 60, $next->getTimestamp() - $now->getTimestamp() );
 }
 
-function hd_push_q( $id ) { return "'" . preg_replace( '/[^a-zA-Z0-9_\-.~%]/', '', $id ) . "' in topics"; }
+function hd_push_q( $id ) { return "'" . preg_replace( '/[^a-zA-Z0-9_.~%-]/', '', $id ) . "' in topics"; }
 
 add_action( 'hd_push_run', function () {
 	$q = get_option( 'hd_push_queue', array() );
@@ -228,7 +228,7 @@ add_action( 'admin_menu', function () {
 		echo '<details><summary>Topic names for your own messages</summary><p>' . implode( ', ', array_map( function ( $t ) { return esc_html( $t->name ) . ' <code>town_' . (int) $t->term_id . '</code>'; }, $tw ) ) . '</p>';
 		echo '<p>' . ( is_wp_error( $ct ) ? '' : implode( ', ', array_map( function ( $t ) { return esc_html( $t->name ) . ' <code>cat_' . (int) $t->term_id . '</code>'; }, $ct ) ) ) . '</p></details>';
 		echo '<h2>Recent activity</h2>';
-		echo $log ? '<pre style="background:#fff;padding:12px;border:1px solid #ddd;white-space:pre-wrap">' . esc_html( implode( "\n", $log ) ) . '</pre>' : '<p>Nothing sent yet.</p>';
+		echo $log ? '<pre style="background:#fff;padding:12px;border:1px solid #ddd;white-space:pre-wrap">' . esc_html( implode( PHP_EOL, $log ) ) . '</pre>' : '<p>Nothing sent yet.</p>';
 		echo '</div>';
 	} );
 } );

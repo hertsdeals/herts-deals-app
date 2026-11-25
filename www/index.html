@@ -323,6 +323,8 @@ function index(data){
 const tn = ids => ids.map(i => towns[i] && towns[i].name).filter(Boolean).join(' & ');
 const inTown = d => !townSel || d.towns.includes(townSel);
 const liveTowns = () => D.towns.filter(t => t.parent && deals.some(d => d.towns.includes(t.id))).sort((a,b) => a.name.localeCompare(b.name));
+/* Every town with something to show: deals, a guide, an intro or local businesses */
+const infoTowns = () => D.towns.filter(t => t.parent && (t.intro || t.guide || deals.some(d => d.towns.includes(t.id)) || Object.values(cos).some(c => c.towns.includes(t.id)))).sort((a,b) => a.name.localeCompare(b.name));
 const townGroups = () => { const g = {}; D.towns.filter(t => t.parent && towns[t.parent]).forEach(t => (g[t.parent] = g[t.parent] || []).push(t)); return Object.entries(g).map(([p, ts]) => [towns[p], ts.sort((a,b) => a.name.localeCompare(b.name))]).sort((a,b) => a[0].name.localeCompare(b[0].name)); };
 const topCats = () => D.categories.filter(c => !c.parent).sort((a,b) => a.name.localeCompare(b.name));
 /* "For you": newest deals from your towns and favourite businesses */
@@ -374,11 +376,11 @@ function Deals(){
 }
 function Towns(){
   const groups = {};
-  liveTowns().forEach(t => (groups[t.parent] = groups[t.parent] || []).push(t));
+  infoTowns().forEach(t => (groups[t.parent] = groups[t.parent] || []).push(t));
   return `<div class="ttl"><h1>Towns</h1><p>Local guides and deals for every town.</p></div>
   ${Object.entries(groups).sort((a,b) => towns[a[0]].name.localeCompare(towns[b[0]].name)).map(([pid, ts]) => `<div class="lbl">${esc(towns[pid].name)}</div><div class="rows">${ts.map(t => {
     const n = deals.filter(d => d.towns.includes(t.id)).length;
-    return `<a class="row" href="#town-${t.id}"><span class="tx"><b class="serif" style="font-size:17px">${esc(t.name)}</b><span>${n} deal${n===1?'':'s'}${t.guide ? ' · Local guide' : ''}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`; }).join('')}</div>`).join('')}`;
+    return `<a class="row" href="#town-${t.id}"><span class="tx"><b class="serif" style="font-size:17px">${esc(t.name)}</b><span>${n ? `${n} deal${n===1?'':'s'}` : 'Town guide'}${n && t.guide ? ' · Local guide' : ''}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`; }).join('')}</div>`).join('')}`;
 }
 function Guides(){
   return `<div class="ttl"><h1>Guides</h1><p>What’s on and where to go in Hertfordshire.</p></div><div class="glist" style="margin-top:18px">${guides.map(gcard).join('')}</div>`;
@@ -431,7 +433,7 @@ function runSearch(q){
   const w = q.split(/\s+/);
   const hit = s => w.every(x => s.toLowerCase().includes(x));
   const ds = deals.filter(d => hit([d.title, d.co.name, tn(d.towns), d.sub ? d.sub.name : '', cats[d.parent] ? cats[d.parent].name : '', d.details].join(' ')));
-  const ts = liveTowns().filter(t => t.name.toLowerCase().includes(q));
+  const ts = infoTowns().filter(t => t.name.toLowerCase().includes(q));
   const gs = guides.filter(g => hit(g.title + ' ' + g.excerpt));
   el.innerHTML = (ts.length ? `<div class="lbl">Towns</div><div class="pills">${ts.map(t => `<a class="pill" href="#town-${t.id}">${esc(t.name)}</a>`).join('')}</div>` : '')
     + (gs.length ? `<div class="lbl">Guides</div><div class="rows">${gs.map(g => `<a class="row" href="#guide-${g.id}"><span class="tx"><b>${esc(g.title)}</b></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>` : '')
@@ -504,7 +506,7 @@ function TownPage(t){
   <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><button class="cb" data-share="${esc(t.link)}" aria-label="Share">${ic('share')}</button></div>
   <div class="tband"><h1>${esc(t.name)}</h1><p>${esc(towns[t.parent] ? towns[t.parent].name : 'Hertfordshire')} · ${ds.length} deal${ds.length===1?'':'s'} · ${bizs.length} business${bizs.length===1?'':'es'}</p></div><div class="tline"></div>
   ${t.intro ? `<div class="dbody"><div class="prose">${paras(t.intro)}</div></div>` : ''}
-  ${ds.length ? sec(`Deals in ${esc(t.name)}`, `<div class="hs">${ds.map(card).join('')}</div>`) : ''}
+  ${ds.length ? sec(`Deals in ${esc(t.name)}`, `<div class="hs">${ds.map(card).join('')}</div>`) : `<p class="note" style="margin-top:18px">No deals in ${esc(t.name)} yet. Add it to your towns in My Herts and we’ll let you know when the first one arrives.</p>`}
   ${sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${sections.map(([h, b], i) => `<details class="acc" ${i===0?'open':''}><summary>${esc(h)} ${ic('down')}</summary><div class="prose art" style="padding-left:0;padding-right:0">${b}</div></details>`).join('')}</div>`) : ''}
   ${bizs.length ? sec('Local businesses', `<div class="rows">${bizs.map(c => `<a class="row" href="#biz-${c.id}">${logo(c)}<span class="tx"><b>${esc(c.name)}</b><span>${esc(c.tagline || '')}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>`) : ''}
   </div>`;
@@ -634,7 +636,7 @@ function route(){
 function toast(m){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.getElementById('shell').appendChild(t); setTimeout(() => t.remove(), 1700); }
 function townSheet(){
   const s = document.createElement('div'); s.id = 'sheet';
-  const ts = liveTowns();
+  const ts = infoTowns();
   s.innerHTML = `<div class="scrim" data-act="close"></div><div class="sheet"><div class="grab"></div><h2>Choose your town</h2>
     <button class="opt ${!townSel?'on':''}" data-town="0">All of Hertfordshire ${!townSel?ic('check'):''}</button>
     ${ts.map(t => `<button class="opt ${townSel===t.id?'on':''}" data-town="${t.id}">${esc(t.name)} ${townSel===t.id?ic('check'):''}</button>`).join('')}</div>`;
