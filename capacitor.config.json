@@ -3,11 +3,41 @@
   "appName": "Herts Deals",
   "webDir": "www",
   "backgroundColor": "#ffffff",
-  "android": { "allowMixedContent": false },
-  "ios": { "contentInset": "never" },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "never"
+  },
   "plugins": {
-    "SplashScreen": { "launchAutoHide": false, "launchShowDuration": 3000, "backgroundColor": "#ffffff", "showSpinner": false },
-    "StatusBar": { "style": "LIGHT", "backgroundColor": "#ffffff", "overlaysWebView": true },
-    "PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] }
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "launchShowDuration": 3000,
+      "backgroundColor": "#ffffff",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#ffffff",
+      "overlaysWebView": true
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    }
+  },
+  "experimental": {
+    "ios": {
+      "spm": {
+        "packageOptions": {
+          "@capacitor-firebase/messaging": {
+            "symlink": true
+          }
+        }
+      }
+    }
   }
 }

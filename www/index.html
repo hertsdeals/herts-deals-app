@@ -204,6 +204,48 @@ details.acc .prose{padding-bottom:14px;font-size:14px}
 .loading{display:grid;place-items:center;height:100%;color:var(--muted)}
 .loading img{width:120px;margin-bottom:10px}
 .foot{padding:36px 18px 10px;text-align:center;font-size:12px;color:#94A3B8;line-height:1.6}
+
+/* welcome (first open) */
+.ob{position:absolute;inset:0;z-index:70;background:#fff;display:flex;flex-direction:column;animation:fi .25s}
+.ob .obh{padding:calc(18px + var(--st)) 22px 6px}
+.ob .obh img{height:40px;width:auto;margin-bottom:18px}
+.ob .step{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.ob h1{margin:0 0 8px;font-size:28px;line-height:1.15}
+.ob .obh p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
+.ob .obb{flex:1;overflow-y:auto;padding:6px 22px 20px;scrollbar-width:none}
+.ob .obb::-webkit-scrollbar{display:none}
+.ob .obf{padding:12px 22px calc(14px + var(--sb));border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.pbtn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:700;font-size:15px;padding:15px;border-radius:999px;width:100%}
+.pbtn[disabled]{opacity:.45}
+.sbtn{display:block;width:100%;text-align:center;font-size:14px;font-weight:600;color:var(--muted);padding:8px}
+.grp{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.picks{display:flex;flex-wrap:wrap;gap:8px}
+.pick{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--pill);border-radius:999px;padding:9px 14px;font-size:14px;font-weight:600;color:var(--navy);background:#fff}
+.pick svg.i{width:15px;height:15px;display:none}
+.pick.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.pick.on svg.i{display:block}
+.bell{width:84px;height:84px;border-radius:50%;background:var(--chip);color:var(--navy);display:grid;place-items:center;margin:26px auto 22px}
+.bell svg.i{width:38px;height:38px}
+.eg{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:0 0 10px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.eg b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+
+/* my herts + settings */
+.seg{display:flex;gap:6px;margin:16px 18px 6px;background:var(--soft);border-radius:999px;padding:4px}
+.seg button{flex:1;padding:9px 6px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.newdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px;vertical-align:1px}
+.fbtn.on{background:var(--red);border-color:var(--red);color:#fff}
+.fbtn.on svg.i{fill:#fff}
+.set{padding:0 18px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.srow b{display:block;font-size:15px;font-weight:600}
+.srow span{font-size:13px;color:var(--muted);line-height:1.4}
+.sw{width:48px;height:28px;border-radius:999px;background:#CBD5E1;position:relative;flex:none;transition:background .2s}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.sw.on{background:var(--navy)}
+.sw.on:after{transform:translateX(20px)}
+.note{margin:14px 18px 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+.iconbtn.gear svg.i{width:22px;height:22px}
 </style>
 </head>
 <body>
@@ -225,7 +267,9 @@ const P = {
   gift:'M20 12v10H4V12M2 7h20v5H2ZM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z',
   user:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M22 11h-6', store:'M3 9l1-5h16l1 5M3 9v11h18V9M3 9h18M9 20v-6h6v6',
   truck:'M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2M15 18H9M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62L18.3 9.38a1 1 0 0 0-.78-.38H14M7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
-  clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM12 6v6l4 2', x:'M18 6L6 18M6 6l12 12'
+  clock:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM12 6v6l4 2', x:'M18 6L6 18M6 6l12 12',
+  bell:'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0',
+  gear:'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'
 };
 const ic = n => `<svg class="i" viewBox="0 0 24 24"><path d="${P[n]}"/></svg>`;
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -248,7 +292,16 @@ const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sun
 let D, towns, cats, cos, deals, dealById, guides;
 let saved = new Set(store.get('saved', []));
 let townSel = store.get('town', 0);
-let tab = 'home', dealCat = 0;
+let tab = 'home', dealCat = 0, mineTab = 'foryou';
+/* Personal choices, kept only on this phone (no account needed) */
+let prefs = Object.assign({ towns:[], interests:[], notify:false, onboarded:false }, store.get('prefs', {}));
+let favs = new Set(store.get('favs', []));       // favourite businesses
+let seenAt = store.get('seenAt', '');           // newest "For you" deal date already seen
+const savePrefs = () => { store.set('prefs', prefs); syncPush(); };
+const saveFavs = () => { store.set('favs', [...favs]); syncPush(); };
+/* Notification topics this phone should follow. The website sends each new deal to its town and its business. */
+const topics = () => ['all', ...prefs.towns.map(t => 'town_' + t), ...[...favs].map(b => 'biz_' + b), ...prefs.interests.map(c => 'cat_' + c)];
+function syncPush(){ const p = window.hdNative && hdNative.push; if (!p || !p.available) return; (prefs.notify ? p.sync(topics()) : p.sync([])).catch(() => {}); }
 
 function index(data){
   D = data;
@@ -270,8 +323,14 @@ function index(data){
 const tn = ids => ids.map(i => towns[i] && towns[i].name).filter(Boolean).join(' & ');
 const inTown = d => !townSel || d.towns.includes(townSel);
 const liveTowns = () => D.towns.filter(t => t.parent && deals.some(d => d.towns.includes(t.id))).sort((a,b) => a.name.localeCompare(b.name));
+const townGroups = () => { const g = {}; D.towns.filter(t => t.parent && towns[t.parent]).forEach(t => (g[t.parent] = g[t.parent] || []).push(t)); return Object.entries(g).map(([p, ts]) => [towns[p], ts.sort((a,b) => a.name.localeCompare(b.name))]).sort((a,b) => a[0].name.localeCompare(b[0].name)); };
+const topCats = () => D.categories.filter(c => !c.parent).sort((a,b) => a.name.localeCompare(b.name));
+/* "For you": newest deals from your towns and favourite businesses */
+const forYou = () => deals.filter(d => favs.has(d.co.id) || d.towns.some(t => prefs.towns.includes(t))).sort((a,b) => b.date > a.date ? 1 : b.date < a.date ? -1 : 0);
+const newCount = () => forYou().filter(d => d.date > seenAt).length;
 const initials = n => n.replace(/[^A-Za-z0-9 ]/g,'').split(/\s+/).filter(w => w && !/^(the|and|ltd)$/i.test(w)).slice(0,2).map(w => w[0]).join('').toUpperCase();
 const logo = c => `<span class="lg">${c.logo ? `<img src="${esc(c.logo)}" alt="" loading="lazy">` : initials(c.name)}</span>`;
+const favBtn = c => `<button class="obtn fbtn ${favs.has(c.id)?'on':''}" data-fav="${c.id}">${ic('heart')}${favs.has(c.id) ? 'Favourite' : 'Favourite ' + esc(c.name.length > 22 ? 'this business' : c.name)}</button>`;
 const saveBtn = (id, cls='save') => `<span role="button" aria-label="Save" class="${cls} ${saved.has(id)?'on':''}" data-save="${id}">${ic('heart')}</span>`;
 
 /* ----- components ----- */
@@ -324,10 +383,41 @@ function Towns(){
 function Guides(){
   return `<div class="ttl"><h1>Guides</h1><p>What’s on and where to go in Hertfordshire.</p></div><div class="glist" style="margin-top:18px">${guides.map(gcard).join('')}</div>`;
 }
-function Saved(){
-  const ds = [...saved].map(id => dealById[id]).filter(Boolean);
-  return `<div class="ttl"><h1>Saved</h1><p>${ds.length ? `${ds.length} saved deal${ds.length===1?'':'s'}` : 'Deals you save appear here'}</p></div>
-  ${ds.length ? `<div class="rows" style="margin-top:8px">${ds.map(row).join('')}</div>` : `<div class="empty"><b>Nothing saved yet</b>Tap the heart on a deal to keep it for later.</div>`}`;
+function Mine(){
+  const head = `<header class="bar"><h1>My Herts</h1><button class="iconbtn gear" data-go="settings" aria-label="Settings">${ic('gear')}</button></header>`;
+  const seg = `<div class="seg">${[['foryou','For you'],['favs','Favourites'],['saved','Saved']].map(([k,l]) => `<button class="${mineTab===k?'on':''}" data-mine="${k}">${l}</button>`).join('')}</div>`;
+  let body = '';
+  if (mineTab === 'foryou') {
+    const fy = forYou().slice(0, 40);
+    const where = prefs.towns.map(t => towns[t] && towns[t].name).filter(Boolean);
+    body = !prefs.towns.length && !favs.size
+      ? `<div class="empty"><b>Make it yours</b>Choose your towns and favourite businesses, and their newest deals will appear here.<br><br><button class="obtn" data-go="settings" style="display:inline-flex">Choose towns</button></div>`
+      : `<p class="note" style="margin-top:4px">${where.length ? 'Deals in ' + esc(where.join(', ')) : ''}${where.length && favs.size ? ' and from ' : ''}${favs.size ? `your ${favs.size} favourite business${favs.size===1?'':'es'}` : ''}.</p>
+        ${fy.length ? `<div class="rows" style="margin-top:6px">${fy.map(d => row(d).replace('<b>', d.date > seenAt ? '<b><span class="newdot"></span>' : '<b>')).join('')}</div>` : `<div class="empty"><b>Nothing new yet</b>We’ll show new deals here as soon as they’re added.</div>`}`;
+  } else if (mineTab === 'favs') {
+    const bs = [...favs].map(id => cos[id]).filter(Boolean).sort((a,b) => a.name.localeCompare(b.name));
+    body = bs.length ? `<div class="rows" style="margin-top:8px">${bs.map(c => { const n = deals.filter(d => d.co.id === c.id).length; return `<a class="row" href="#biz-${c.id}">${logo(c)}<span class="tx"><b>${esc(c.name)}</b><span>${esc(tn(c.towns))}${n ? ` · ${n} deal${n===1?'':'s'}` : ''}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`; }).join('')}</div>`
+      : `<div class="empty"><b>No favourites yet</b>Tap “Favourite” on a business page to follow it. We’ll let you know when it adds a new deal.</div>`;
+  } else {
+    const ds = [...saved].map(id => dealById[id]).filter(Boolean);
+    body = ds.length ? `<div class="rows" style="margin-top:8px">${ds.map(row).join('')}</div>` : `<div class="empty"><b>Nothing saved yet</b>Tap the heart on a deal to keep it for later.</div>`;
+  }
+  return head + seg + body;
+}
+function SettingsPage(){
+  const p = window.hdNative && hdNative.push;
+  const tw = prefs.towns.map(t => towns[t] && towns[t].name).filter(Boolean);
+  const it = prefs.interests.map(c => cats[c] && cats[c].name).filter(Boolean);
+  return `<div class="view detail" data-detail>
+  <div class="ttl" style="padding-top:calc(64px + var(--st))"><h1>Settings</h1><p>Your choices are saved on this phone only.</p></div>
+  <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button></div>
+  <div class="set" style="margin-top:14px">
+    <button class="srow" data-act="pick-towns"><div><b>Your towns</b><span>${tw.length ? esc(tw.join(', ')) : 'None chosen yet'}</span></div>${ic('right').replace('class="i"','class="i chev"')}</button>
+    <button class="srow" data-act="pick-interests"><div><b>What you’re into</b><span>${it.length ? esc(it.join(', ')) : 'Optional'}</span></div>${ic('right').replace('class="i"','class="i chev"')}</button>
+    ${p && p.available ? `<button class="srow" data-act="notify"><div><b>Notifications</b><span>New deals in your towns and from your favourite businesses. Sent between 9am and 8pm.</span></div><span class="sw ${prefs.notify?'on':''}"></span></button>` : `<div class="srow"><div><b>Notifications</b><span>Available in the Herts Deals app for iPhone and Android.</span></div></div>`}
+  </div>
+  <p class="note">Herts Deals doesn’t need an account. We don’t collect your name, email or location. If you turn on notifications, your phone gets an anonymous ID so we can send them.</p>
+  </div>`;
 }
 function Search(){
   return `<div class="ttl" style="padding-bottom:0"><h1>Search</h1></div>
@@ -363,6 +453,7 @@ function DealPage(d){
     <h1>${esc(d.title)}</h1>
     <div class="kv"><span>${ic('pin')}${esc(tn(d.towns))}</span>${d.sub ? `<span>${ic('tag')}${esc(d.sub.name)}</span>` : ''}${season ? `<span>${ic('clock')}${season}</span>` : ''}</div>
     <a class="biz" href="#biz-${c.id}">${logo(c)}<div><b>${esc(c.name)}</b><span>${esc(c.tagline || 'Independent business in ' + tn(c.towns))}</span></div>${ic('right').replace('class="i"','class="i chev"')}</a>
+    <div class="btnrow" style="margin-top:10px">${favBtn(c)}</div>
     ${d.details ? `<div class="blk"><h3>The offer</h3><div class="prose clamp" id="dd">${paras(d.details)}</div><button class="more" data-more="dd">Read more</button></div>` : ''}
     <div class="blk"><h3>How to claim</h3><div class="facts">
       <div class="fact">${ic('check')}<div><b>${esc(REDEEM[d.redeem] || REDEEM.other)}</b>${d.booking ? `<span>${esc(d.booking)}</span>` : ''}</div></div>
@@ -386,6 +477,7 @@ function BizPage(c){
   <div class="bhead">${logo(c)}<h1>${esc(c.name)}</h1><p>${esc(c.tagline || '')}</p>
     <div class="kv" style="margin:10px 0 0"><span>${ic('pin')}${esc(tn(c.towns))}</span>${sub.length ? `<span>${ic('tag')}${esc(sub.join(', '))}</span>` : ''}</div></div>
   <div class="dbody">
+    <div class="btnrow" style="margin-bottom:10px">${favBtn(c)}</div>
     <div class="btnrow">${c.phone ? `<a class="obtn" href="tel:${esc(c.phone.replace(/\s/g,''))}">${ic('phone')}Call</a>` : ''}${c.website ? `<a class="obtn" href="${esc(c.website)}" target="_blank" rel="noopener">${ic('globe')}Website</a>` : ''}${maps ? `<a class="obtn" href="${esc(maps)}" target="_blank" rel="noopener">${ic('map')}Directions</a>` : ''}${c.instagram ? `<a class="obtn" href="${esc(c.instagram)}" target="_blank" rel="noopener">${ic('insta')}Instagram</a>` : ''}</div>
     ${ds.length ? `<div class="blk"><h3>Deals</h3></div>` : ''}
   </div>
@@ -457,23 +549,73 @@ function GuidePage(g){
   ${linked.length ? (listOnly ? '' : sec('Deals in this guide', '')) + `<div class="grid" style="margin-top:${listOnly ? 22 : 0}px">${linked.map(card).join('')}</div>` : ''}
   </div>`;
 }
+/* ----- welcome screens and pickers ----- */
+let ob = null;
+function showOb(steps, mode){
+  const p = window.hdNative && hdNative.push;
+  if (!(p && p.available)) steps = steps.filter(s => s !== 'notify');
+  if (!steps.length) return;
+  ob = { steps, i:0, mode, towns:new Set(prefs.towns), interests:new Set(prefs.interests) };
+  renderOb();
+}
+function renderOb(){
+  let el = document.getElementById('ob');
+  if (!el) { el = document.createElement('div'); el.id = 'ob'; el.className = 'ob'; document.getElementById('shell').appendChild(el); }
+  const s = ob.steps[ob.i], welcome = ob.mode === 'welcome', last = ob.i === ob.steps.length - 1;
+  const stepLbl = welcome && ob.steps.length > 1 ? `<div class="step">Step ${ob.i + 1} of ${ob.steps.length}</div>` : '';
+  const logoImg = welcome && ob.i === 0 ? '<img src="img/logo.png" alt="Herts Deals">' : '';
+  const pick = (attr, id, name, on) => `<button class="pick ${on?'on':''}" data-${attr}="${id}">${ic('check')}${esc(name)}</button>`;
+  let h = '', b = '', f = '';
+  if (s === 'towns') {
+    h = `${logoImg}${stepLbl}<h1>${welcome ? 'Which towns do you love?' : 'Your towns'}</h1><p>Pick as many as you like. We’ll show you their newest deals${prefs.notify || welcome ? ' and let you know when new ones are added' : ''}.</p>`;
+    b = townGroups().map(([g, ts]) => `<div class="grp">${esc(g.name)}</div><div class="picks">${ts.map(t => pick('obt', t.id, t.name, ob.towns.has(t.id))).join('')}</div>`).join('');
+    f = `<button class="pbtn" data-ob="next">${welcome && !last ? 'Continue' : 'Save'}</button>${welcome ? '<button class="sbtn" data-ob="skip">Skip for now</button>' : '<button class="sbtn" data-ob="cancel">Cancel</button>'}`;
+  } else if (s === 'interests') {
+    h = `${logoImg}${stepLbl}<h1>What are you into?</h1><p>Optional. It helps us send you the deals you’ll actually want.</p>`;
+    b = `<div class="picks" style="margin-top:16px">${topCats().map(c => pick('obi', c.id, c.name, ob.interests.has(c.id))).join('')}</div>`;
+    f = `<button class="pbtn" data-ob="next">${welcome && !last ? 'Continue' : 'Save'}</button>${welcome ? '<button class="sbtn" data-ob="next">Skip</button>' : '<button class="sbtn" data-ob="cancel">Cancel</button>'}`;
+  } else {
+    const t = [...ob.towns].map(x => towns[x]).filter(Boolean)[0];
+    h = `${stepLbl}<div class="bell">${ic('bell')}</div><h1 style="text-align:center">Never miss a local deal</h1><p style="text-align:center">We’ll let you know when a new deal is added${t ? ' in your towns' : ''}, or by a business you’ve favourited. Never before 9am or after 8pm.</p>`;
+    b = `<div style="margin-top:18px"><div class="eg"><b>New in ${esc(t ? t.name : 'Hertford')}</b>20% off your first visit at a local independent</div><div class="eg"><b>A favourite has a new deal</b>Tap to see it straight away</div></div>`;
+    f = `<button class="pbtn" data-ob="enable">${ic('bell')}Turn on notifications</button><button class="sbtn" data-ob="finish">Not now</button>`;
+  }
+  el.innerHTML = `<div class="obh">${h}</div><div class="obb">${b}</div><div class="obf">${f}</div>`;
+}
+function finishOb(){
+  prefs.towns = [...ob.towns]; prefs.interests = [...ob.interests];
+  if (ob.mode === 'welcome') { prefs.onboarded = true; if (prefs.towns.length === 1 && !townSel) { townSel = prefs.towns[0]; store.set('town', townSel); } }
+  ob = null; document.getElementById('ob')?.remove(); savePrefs();
+  if (detail && location.hash === '#settings') openDetail(SettingsPage()); else renderTab();
+}
+async function turnOnNotifications(){
+  const p = window.hdNative && hdNative.push; if (!p) return false;
+  const r = await p.enable().catch(() => 'error');
+  if (r === 'granted') { prefs.notify = true; return true; }
+  prefs.notify = false;
+  toast(r === 'denied' ? 'Turn on notifications in your phone’s Settings' : 'Notifications aren’t available right now');
+  return false;
+}
+
 const fmtDate = s => { s = String(s); if (!/^\d{8}$/.test(s)) return s; const dt = new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8)); return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }); };
 
 /* ----- router ----- */
 const root = document.getElementById('root');
 let detail = false;
 function renderTab(){
-  const html = ({home:Home, deals:Deals, towns:Towns, guides:Guides, saved:Saved, search:Search}[tab] || Home)();
+  const html = ({home:Home, deals:Deals, towns:Towns, guides:Guides, mine:Mine, search:Search}[tab] || Home)();
   root.querySelector('.view[data-tab]')?.remove();
   const v = document.createElement('div'); v.className = 'view'; v.dataset.tab = tab; v.innerHTML = html;
   root.prepend(v);
   v.addEventListener('scroll', () => v.querySelector('.bar')?.classList.toggle('scrolled', v.scrollTop > 4), { passive:true });
+  if (tab === 'mine' && mineTab === 'foryou') { const top = forYou()[0]; if (top && top.date > seenAt) { seenAt = top.date; store.set('seenAt', seenAt); } }
   if (tab === 'search') { const q = document.getElementById('q'); q.addEventListener('input', e => runSearch(e.target.value)); setTimeout(() => q.focus(), 50); }
   renderTabs();
 }
 function renderTabs(){
-  const t = [['home','home','Home'],['deals','tag','Deals'],['towns','pin','Towns'],['guides','book','Guides'],['saved','heart','Saved']];
-  document.getElementById('tabs').innerHTML = t.map(([k,i,l]) => `<button class="tab ${tab===k?'on':''}" data-go="${k}">${ic(i)}${l}${k==='saved'&&saved.size?`<i>${saved.size}</i>`:''}</button>`).join('');
+  const t = [['home','home','Home'],['deals','tag','Deals'],['towns','pin','Towns'],['guides','book','Guides'],['mine','heart','My Herts']];
+  const n = newCount();
+  document.getElementById('tabs').innerHTML = t.map(([k,i,l]) => `<button class="tab ${tab===k?'on':''}" data-go="${k}">${ic(i)}${l}${k==='mine'&&n?`<i>${n > 9 ? '9+' : n}</i>`:''}</button>`).join('');
 }
 function openDetail(html){ root.querySelectorAll('[data-detail],[data-cta]').forEach(e => e.remove()); root.insertAdjacentHTML('beforeend', html); detail = true; }
 function closeDetail(){ root.querySelectorAll('[data-cta]').forEach(e => e.remove()); const v = root.querySelector('[data-detail]'); if (v) { v.classList.add('leaving'); setTimeout(() => v.remove(), 220); } detail = false; }
@@ -483,7 +625,9 @@ function route(){
   if ((m = h.match(/^biz-(\d+)$/)) && cos[m[1]]) return openDetail(BizPage(cos[m[1]]));
   if ((m = h.match(/^town-(\d+)$/)) && towns[m[1]]) return openDetail(TownPage(towns[m[1]]));
   if ((m = h.match(/^guide-(\d+)$/))) { const g = guides.find(x => x.id === +m[1]); if (g) return openDetail(GuidePage(g)); }
-  const k = ['home','deals','towns','guides','saved','search'].includes(h) ? h : 'home';
+  if (h === 'settings') return openDetail(SettingsPage());
+  if (h === 'saved') { mineTab = 'saved'; }
+  const k = ['home','deals','towns','guides','search'].includes(h) ? h : (h === 'mine' || h === 'saved') ? 'mine' : 'home';
   if (k !== tab || !root.querySelector('.view[data-tab]')) { tab = k; renderTab(); }
   if (detail) closeDetail();
 }
@@ -497,11 +641,31 @@ function townSheet(){
   document.getElementById('shell').appendChild(s);
 }
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-save],[data-go],[data-act],[data-town],[data-cat],[data-share],[data-more]'); if (!el) return;
+  const el = e.target.closest('[data-save],[data-go],[data-act],[data-town],[data-cat],[data-share],[data-more],[data-fav],[data-mine],[data-obt],[data-obi],[data-ob]'); if (!el) return;
+  if (el.dataset.obt || el.dataset.obi) { const id = +(el.dataset.obt || el.dataset.obi), set = el.dataset.obt ? ob.towns : ob.interests;
+    set.has(id) ? set.delete(id) : set.add(id); el.classList.toggle('on', set.has(id)); return; }
+  if (el.dataset.ob) { const a = el.dataset.ob;
+    if (a === 'cancel') { ob = null; document.getElementById('ob')?.remove(); return; }
+    if (a === 'skip') { ob.towns.clear(); ob.i = ob.steps.length - 1; if (ob.steps[ob.i] !== 'notify') return finishOb(); renderOb(); return; }
+    if (a === 'next') { if (ob.i < ob.steps.length - 1) { ob.i++; renderOb(); } else finishOb(); return; }
+    if (a === 'finish') return finishOb();
+    if (a === 'enable') { el.disabled = true; turnOnNotifications().then(ok => { if (ok) toast('Notifications on'); finishOb(); }); return; }
+    return; }
+  if (el.dataset.fav) { e.preventDefault(); const id = +el.dataset.fav, c = cos[id];
+    favs.has(id) ? (favs.delete(id), toast('Removed from favourites')) : (favs.add(id), toast(prefs.notify ? 'Favourited. We’ll tell you about new deals' : 'Added to favourites'));
+    saveFavs(); document.querySelectorAll(`[data-fav="${id}"]`).forEach(b => b.outerHTML = favBtn(c)); renderTabs();
+    if (tab === 'mine' && !detail) renderTab(); return; }
+  if (el.dataset.mine) { mineTab = el.dataset.mine; renderTab(); return; }
+  if (el.dataset.act === 'pick-towns') { showOb(['towns'], 'edit'); return; }
+  if (el.dataset.act === 'pick-interests') { showOb(['interests'], 'edit'); return; }
+  if (el.dataset.act === 'notify') { const sw = el.querySelector('.sw');
+    if (prefs.notify) { prefs.notify = false; savePrefs(); sw.classList.remove('on'); toast('Notifications off'); }
+    else turnOnNotifications().then(ok => { savePrefs(); sw.classList.toggle('on', ok); if (ok) toast('Notifications on'); });
+    return; }
   if (el.dataset.save) { e.preventDefault(); e.stopPropagation(); const id = +el.dataset.save;
     saved.has(id) ? (saved.delete(id), toast('Removed from Saved')) : (saved.add(id), toast('Saved'));
     store.set('saved', [...saved]); document.querySelectorAll(`[data-save="${id}"]`).forEach(b => b.classList.toggle('on', saved.has(id))); renderTabs();
-    if (tab === 'saved' && !detail) renderTab(); return; }
+    if (tab === 'mine' && !detail) renderTab(); return; }
   if (el.dataset.share) { const url = el.dataset.share;
     if (window.hdNative && hdNative.share) hdNative.share(url); else if (navigator.share) navigator.share({ url }).catch(() => {}); else navigator.clipboard?.writeText(url).then(() => toast('Link copied')); return; }
   if (el.dataset.more) { const b = document.getElementById(el.dataset.more); b.classList.remove('clamp'); el.remove(); return; }
@@ -514,7 +678,8 @@ document.addEventListener('click', e => {
 });
 window.addEventListener('hashchange', () => { try { sessionStorage.setItem('hd_nav','1'); } catch(e){} route(); });
 
-function start(data){ window.hdNative && hdNative.ready(); index(data); const h = location.hash.slice(1); if (['deals','towns','guides','saved','search'].includes(h)) tab = h; renderTab(); route(); }
+function start(data){ window.hdNative && hdNative.ready(); index(data); const h = location.hash.slice(1); if (['deals','towns','guides','search'].includes(h)) tab = h; renderTab(); route();
+  if (!prefs.onboarded) showOb(['towns','interests','notify'], 'welcome'); else syncPush(); }
 const cached = store.get('feed', null);
 if (cached) start(cached);
 fetch(FEED, { credentials:'omit' }).then(r => r.json()).then(data => {
@@ -522,7 +687,13 @@ fetch(FEED, { credentials:'omit' }).then(r => r.json()).then(data => {
   if (!cached) start(data); else if (data.generated !== cached.generated) { index(data); if (!detail) renderTab(); }
 }).catch(() => { if (cached) return;
   fetch('feed.json').then(r => r.json()).then(start).catch(() => { window.hdNative && hdNative.ready(); root.innerHTML = '<div class="empty"><b>You’re offline</b>Connect to the internet to load local deals.</div>'; }); });
-window.hdApp = { isDetail: () => !!detail, closeSheet: () => { const s = document.getElementById('sheet'); if (s) { s.remove(); return true; } return false; }, tab: () => tab };
+/* Opens a deal from a notification. A brand-new deal may not be in the saved copy yet, so fetch the latest first. */
+function openDeal(id){
+  id = +id; if (!id) return;
+  if (dealById && dealById[id]) { location.hash = 'deal-' + id; return; }
+  fetch(FEED + '?t=' + Date.now(), { credentials:'omit' }).then(r => r.json()).then(data => { store.set('feed', data); index(data); renderTab(); location.hash = dealById[id] ? 'deal-' + id : 'mine'; }).catch(() => { location.hash = 'mine'; });
+}
+window.hdApp = { isDetail: () => !!detail, closeSheet: () => { if (document.getElementById('ob') && ob && ob.mode !== 'welcome') { ob = null; document.getElementById('ob').remove(); return true; } const s = document.getElementById('sheet'); if (s) { s.remove(); return true; } return false; }, tab: () => tab, openDeal, toast };
 })();
 </script>
 <script src="native.js"></script>
