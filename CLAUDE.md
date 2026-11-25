@@ -25,6 +25,15 @@ The iPhone and Android app for Herts Deals (hertsdeals.co.uk), a local guide to 
 - `native.js` must load before the main app script: when there is a saved feed the app starts immediately, and `hdNative.ready()` (which hides the splash screen, `launchAutoHide: false`) has to exist by then. native.js also hides the splash after 5s as a safety net.
 - Deal grids use `repeat(2,minmax(0,1fr))`; plain `1fr` let long business names widen a column and the page scroll sideways.
 
+## Town guides
+- Town pages show the full local guide from the website: at a glance, markets, shops, parking (car park cards with tap-to-copy pay-by-app codes and Directions, price tables, bus routes folded), landmarks, FAQs and nearby towns.
+- Source of truth is the website: term meta `hd_town_guide_new` (else `hd_town_guide`) and `hd_town_glance` on each Location (snippet 166 shows it on the site). The old feed field `towns[].guide` only reads `hd_town_guide`, which is out of date; don't use it for new work.
+- Endpoint `GET /wp-json/hd/v1/towns` (snippet copy: `website/town-guides-snippet.php`) returns `{version, towns:{id:{glance, guide, nearby}}}`, cached and rebuilt when a town or deal is saved. It also adds `towns_version` to the main feed. The app downloads it only when that version changes and keeps it in localStorage `hd_tg`. `www/towns.json` is the bundled copy (Codemagic refreshes it).
+- The app turns the guide HTML into native pieces in `townGuide()` in `index.html`. It relies on the guide's classes: `hp-card`, `hp-meta`, `hp-dir`, `hp-note` ("Pay-by-app location code"), `hp-table`, `<details>` FAQs, `<h4>By bus`.
+
+## Featured deals
+- Dan chooses home-screen featured deals at Tools > App featured deals (snippet copy: `website/featured-deals-snippet.php`), in order, with optional end dates. The feed gets `featured: [{id, until}]`. Featured deals show first (first in the chosen town if one is picked), labelled "Featured". Paid placement must stay labelled.
+
 ## App icon
 - White background, red logo (`#BC1B22`). Vector source: `assets/source/herts-deals-logo-traced.svg` (traced from the website logo). `assets/icon-only.png` (logo ~74% wide), `assets/icon-foreground.png` (Android adaptive, logo ~78% wide, because the template insets it 16.7%), `assets/icon-background.png` (white).
 - Regenerate with `npx capacitor-assets generate --iconBackgroundColor '#ffffff' --splashBackgroundColor '#ffffff' --splashBackgroundColorDark '#0D3B66'`, then delete the `icons/` folder and `www/manifest.json` it creates and revert its reformatting of `AndroidManifest.xml`.
@@ -39,4 +48,5 @@ The iPhone and Android app for Herts Deals (hertsdeals.co.uk), a local guide to 
 ## Where things stand
 - Work is on branch `push-notifications-and-favourites` (towns, interests, notifications, favourites, My Herts, all towns listed, splash fix, grid fix, new icon). Merge into `main` once Dan has tested an Android build from the branch on his phone.
 - Debug APKs from Codemagic aren't signed with the same key each time, so Dan must uninstall the old test app before installing a new one.
+- 25 Nov: town guides and featured deals built in the app. The two website snippets above still need installing in Code Snippets (my attempt to install them was blocked; Dan to approve or paste them). Until then the app uses the bundled `www/towns.json` and no featured list.
 - To do: Dan tests build #5 (reopen several times, test notification to topic `town_249` = Hertford from the Firebase console); then iPhone TestFlight setup; Play Data safety; store listings (screenshots, descriptions); merge to main and submit.

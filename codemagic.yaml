@@ -15,6 +15,8 @@ workflows:
         script: npm ci
       - name: Bundle the latest deals (used if the phone is offline on first open)
         script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Refresh bundled town guides
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/towns -o /tmp/towns.json && mv /tmp/towns.json www/towns.json || echo "Keeping bundled town guides"
       - name: Sync web code into Android
         script: npx cap sync android
       - name: Build APK
@@ -38,6 +40,8 @@ workflows:
         script: npm ci
       - name: Bundle the latest deals
         script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Refresh bundled town guides
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/towns -o /tmp/towns.json && mv /tmp/towns.json www/towns.json || echo "Keeping bundled town guides"
       - name: Sync web code into Android
         script: npx cap sync android
       - name: Build app bundle
@@ -67,6 +71,8 @@ workflows:
         script: npm ci
       - name: Bundle the latest deals
         script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/app -o www/feed.json || echo "Keeping bundled feed"
+      - name: Refresh bundled town guides
+        script: curl -fsS https://hertsdeals.co.uk/wp-json/hd/v1/towns -o /tmp/towns.json && mv /tmp/towns.json www/towns.json || echo "Keeping bundled town guides"
       - name: Sync web code into iOS
         script: npx cap sync ios
       - name: Signing

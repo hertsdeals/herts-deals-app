@@ -148,6 +148,59 @@ details.acc summary::-webkit-details-marker{display:none}
 details.acc summary svg.i{transition:transform .2s;color:var(--muted)}
 details.acc[open] summary svg.i{transform:rotate(180deg)}
 details.acc .prose{padding-bottom:14px;font-size:14px}
+/* town guides */
+.glance{margin:18px 18px 0;padding:14px 16px;background:var(--chip);border-radius:var(--r)}
+.glance h3{margin:0 0 8px;font-size:16px;color:var(--navy)}
+.glance dl{margin:0;display:grid;gap:7px}
+.glance dl>div{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:baseline}
+.glance dt{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.glance dd{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+.jump{display:flex;gap:8px;overflow-x:auto;padding:14px 18px 0;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump button{flex:none;border:1px solid var(--pill);background:#fff;color:var(--navy);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600}
+details.acc{scroll-margin-top:calc(70px + var(--st))}
+.tg{padding-bottom:16px;font-size:14.5px;color:var(--text);line-height:1.6;overflow-wrap:anywhere}
+.tg p{margin:0 0 10px}
+.tg ul{padding-left:20px;margin:0 0 12px}
+.tg li{margin:0 0 4px}
+.tg strong{color:var(--ink)}
+.tg h4{margin:20px 0 8px;font-size:15.5px;color:var(--ink)}
+.tg a{color:var(--navy);text-decoration:underline;text-underline-offset:2px}
+.tg .hp-note{font-size:12.5px;color:var(--muted);line-height:1.5}
+.tg .tgat{background:var(--chip);border-radius:12px;padding:12px 14px 4px;margin:0 0 12px}
+.tg .tgat h4{margin:0 0 6px;font-size:14px;color:var(--navy)}
+.tg .tgat ul{list-style:none;padding:0}
+.tg .tgat li{font-size:14px;margin:0 0 8px}
+.tg table{width:100%;border-collapse:collapse;margin:0 0 10px;font-size:14px}
+.tg th,.tg td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+.tg th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.tg td:last-child{font-weight:600;color:var(--ink);text-align:right}
+.tg th:last-child{text-align:right}
+.tg .hp-cards{display:flex;gap:10px;overflow-x:auto;margin:0 -18px 12px;padding:2px 18px 6px;scroll-snap-type:x mandatory;scroll-padding:0 18px;scrollbar-width:none}
+.tg .hp-cards::-webkit-scrollbar{display:none}
+.tg .hp-card{flex:0 0 84%;scroll-snap-align:start;border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;background:#fff;display:flex;flex-direction:column}
+.tg .hp-card h4{margin:0 0 3px;font-size:16px;font-family:Caudex,serif;color:var(--navy)}
+.tg .hp-card .hp-meta{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.tg .hp-card ul{font-size:13.5px;padding-left:18px;margin:0 0 8px}
+.tg .hp-card .acts{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px;padding-top:4px}
+.tg .code{display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--navy);background:#fff;color:var(--navy);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}
+.tg .code small{font-weight:500;color:var(--muted)}
+.tg .code svg.i{width:14px;height:14px}
+.tg .codes{margin:0 0 8px}
+.tg .codes b{display:block;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.tg .codes div{display:flex;flex-wrap:wrap;gap:6px}
+.tg a.hp-dir{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;text-decoration:none;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600}
+.tg details{border:1px solid var(--line);border-radius:12px;padding:0 14px;margin:0 0 10px}
+.tg details summary{padding:12px 0;font-weight:600;color:var(--ink);cursor:pointer}
+.tg details[open]{padding-bottom:4px}
+.faqs details{border-top:1px solid var(--line)}
+.faqs details:last-child{border-bottom:1px solid var(--line)}
+.faqs summary{list-style:none;padding:14px 0;font-weight:600;font-size:15px;display:flex;justify-content:space-between;gap:10px;cursor:pointer}
+.faqs summary::-webkit-details-marker{display:none}
+.faqs details[open] summary svg.i{transform:rotate(180deg)}
+.faqs p{margin:0 0 14px;color:var(--text);font-size:14.5px;line-height:1.6}
+.pill small{font-weight:500;color:var(--muted)}
+.card .who .ft{color:var(--red);font-weight:700}
 .cta{position:absolute;left:0;right:0;bottom:0;z-index:25;background:#fff;border-top:1px solid var(--line);padding:12px 18px calc(12px + var(--sb))}
 .cta a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--red);color:#fff;font-weight:700;font-size:15px;padding:15px;border-radius:999px}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap}
@@ -256,12 +309,15 @@ details.acc .prose{padding-bottom:14px;font-size:14px}
 <script>
 (() => {
 const FEED = 'https://hertsdeals.co.uk/wp-json/hd/v1/app';
+/* Full town guides (parking, markets, shops, landmarks, FAQs, nearby towns), the same as the website's town pages.
+   Kept on the phone; downloaded again only when the feed's towns_version changes. towns.json is a bundled copy for first launch. */
+const TOWNS_URL = 'https://hertsdeals.co.uk/wp-json/hd/v1/towns';
 const P = {
   home:'M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2ZM9 22V12h6v10', tag:'M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42ZM7.5 7.5h.01',
   pin:'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0ZM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z', book:'M2 4h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2ZM22 4h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z',
   heart:'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z',
   search:'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.3-4.3', back:'M15 18l-6-6 6-6', down:'M6 9l6 6 6-6', right:'M9 18l6-6-6-6', check:'M20 6L9 17l-5-5',
-  share:'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13', ext:'M15 3h6v6M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
+  share:'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13', copy:'M9 9h11v11H9zM5 15H4V4h11v1', ext:'M15 3h6v6M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6',
   phone:'M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z',
   globe:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z',
   insta:'M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5ZM16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37ZM17.5 6.5h.01',
@@ -293,6 +349,19 @@ const REDEEM = { online:'Use the code or link on the business’s website.', boo
 const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
 
 let D, towns, cats, cos, deals, dealById, guides;
+let featIds = [];
+let TG = null; try { TG = JSON.parse(localStorage.getItem('hd_tg') || 'null'); } catch(e){}
+const tgReady = j => j && j.towns && typeof j.towns === 'object';
+function tgUse(j, save){
+  if (!tgReady(j)) return;
+  TG = j; if (save) { try { localStorage.setItem('hd_tg', JSON.stringify(j)); } catch(e){} }
+  const m = location.hash.match(/^#town-(\d+)$/); if (m && detail && towns && towns[m[1]]) openDetail(TownPage(towns[m[1]]), true);
+}
+function tgSync(want){
+  if (want && TG && TG.version === want) return;
+  if (want) { fetch(TOWNS_URL + '?v=' + encodeURIComponent(want), { credentials:'omit' }).then(r => r.json()).then(j => tgUse(j, true)).catch(() => {}); return; }
+  if (!TG) fetch('towns.json').then(r => r.json()).then(j => { if (!TG) tgUse(j, false); }).catch(() => {});
+}
 let saved = new Set(store.get('saved', []));
 let townSel = store.get('town', 0);
 let tab = 'home', dealCat = 0, mineTab = 'foryou';
@@ -321,6 +390,7 @@ function index(data){
     return {...d, title, co: cos[cid] || null, parent, sub};
   }).filter(d => d.co);
   dealById = Object.fromEntries(deals.map(d => [d.id, d]));
+  featIds = featuredIds();
   guides = (D.guides || []).filter(g => g.html && g.html.length > 400);
 }
 const tn = ids => ids.map(i => towns[i] && towns[i].name).filter(Boolean).join(' & ');
@@ -330,6 +400,11 @@ const liveTowns = () => D.towns.filter(t => t.parent && deals.some(d => d.towns.
 const infoTowns = () => D.towns.filter(t => t.parent && (t.intro || t.guide || deals.some(d => d.towns.includes(t.id)) || Object.values(cos).some(c => c.towns.includes(t.id)))).sort((a,b) => a.name.localeCompare(b.name));
 const townGroups = () => { const g = {}; D.towns.filter(t => t.parent && towns[t.parent]).forEach(t => (g[t.parent] = g[t.parent] || []).push(t)); return Object.entries(g).map(([p, ts]) => [towns[p], ts.sort((a,b) => a.name.localeCompare(b.name))]).sort((a,b) => a[0].name.localeCompare(b[0].name)); };
 const topCats = () => D.categories.filter(c => !c.parent).sort((a,b) => a.name.localeCompare(b.name));
+/* Featured deals Dan chooses on the website (Tools > App featured deals), in his order. Ended slots drop off. */
+function featuredIds(){
+  const today = new Date().toLocaleDateString('en-CA');
+  return (D.featured || []).filter(f => f && dealById[f.id] && (!f.until || f.until >= today)).map(f => +f.id);
+}
 /* "For you": newest deals from your towns and favourite businesses */
 const forYou = () => deals.filter(d => favs.has(d.co.id) || d.towns.some(t => prefs.towns.includes(t))).sort((a,b) => b.date > a.date ? 1 : b.date < a.date ? -1 : 0);
 const newCount = () => forYou().filter(d => d.date > seenAt).length;
@@ -341,7 +416,7 @@ const saveBtn = (id, cls='save') => `<span role="button" aria-label="Save" class
 /* ----- components ----- */
 const card = d => `<a class="card" href="#deal-${d.id}">
   <div class="ph">${d.image ? `<img src="${esc(d.image)}" alt="" loading="lazy">` : ''}${d.badge ? `<span class="badge">${esc(d.badge)}</span>` : ''}${saveBtn(d.id)}${d.features.includes(375) ? '<span class="star">★</span>' : ''}</div>
-  <div class="who">${esc(d.co.name)}</div><h4>${esc(d.title)}</h4><div class="where">${ic('pin')}${esc(tn(d.towns))}</div></a>`;
+  <div class="who">${featIds.includes(d.id) ? '<span class="ft">Featured</span> · ' : ''}${esc(d.co.name)}</div><h4>${esc(d.title)}</h4><div class="where">${ic('pin')}${esc(tn(d.towns))}</div></a>`;
 const row = d => `<a class="row" href="#deal-${d.id}"><span class="th">${d.image ? `<img src="${esc(d.image)}" alt="" loading="lazy">` : ''}</span>
   <span class="tx"><b>${esc(d.title)}</b><span>${esc(d.co.name)} · ${esc(tn(d.towns))}</span>${d.badge ? `<br><span class="mini">${esc(d.badge)}</span>` : ''}</span>${ic('right').replace('class="i"','class="i chev"')}</a>`;
 const gcard = g => { const img = g.image || (g.html.match(/<img src="([^"]+)"/) || [])[1]; return `<a class="gcard" href="#guide-${g.id}"><div class="cv ${img?'':'plain'}">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ''}<span>${esc(g.title)}</span></div><p>${esc(g.excerpt || 'Hand-picked deals from local independents.')}</p></a>`; };
@@ -352,7 +427,9 @@ const townBtn = () => `<button class="townbtn" data-act="town">${ic('pin')}${esc
 /* ----- tabs ----- */
 function Home(){
   const v = deals.filter(inTown);
-  const featured = [...v].sort((a,b) => (b.features.includes(375) - a.features.includes(375)) || (b.date > a.date ? 1 : -1)).slice(0,6);
+  const paid = featIds.map(id => dealById[id]).filter(inTown);
+  const rest = v.filter(d => !featIds.includes(d.id)).sort((a,b) => (b.features.includes(375) - a.features.includes(375)) || (b.date > a.date ? 1 : -1));
+  const featured = [...paid, ...rest].slice(0, Math.max(6, paid.length));
   const latest = [...v].sort((a,b) => b.date > a.date ? 1 : -1).slice(0,5);
   const place = townSel ? towns[townSel].name : 'Hertfordshire';
   return `${topbar(townBtn())}
@@ -497,26 +574,74 @@ function BizPage(c){
     <div class="blk"><a class="obtn" href="${esc(c.link)}" target="_blank" rel="noopener" style="display:flex">Full profile and opening hours ${ic('ext')}</a></div>
   </div></div>`;
 }
+/* Turns a town's guide (the same HTML the website shows) into app sections: parking cards with
+   tap-to-copy pay-by-app codes and Directions, price tables, bus routes folded away, and FAQs pulled out. */
+function townGuide(html){
+  const out = { sections: [], faqs: [] };
+  if (!html) return out;
+  const box = new DOMParser().parseFromString('<div id="g">' + html + '</div>', 'text/html').getElementById('g');
+  box.querySelectorAll('script,style,iframe,object,embed,form,nav,img').forEach(e => e.remove());
+  box.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { const n = a.name.toLowerCase();
+    if (n.startsWith('on') || n === 'style' || ((n === 'href' || n === 'src') && /^\s*javascript:/i.test(a.value))) e.removeAttribute(a.name); }));
+  /* FAQs: the guide's question boxes (not the website's "How to pay" / "Bus routes" folds) */
+  box.querySelectorAll('details').forEach(d => { if (d.classList.contains('hp-acc')) return;
+    const q = d.querySelector('summary'), a = d.querySelector('p');
+    if (q && a) out.faqs.push([q.textContent.trim(), a.textContent.trim()]); d.remove(); });
+  box.querySelectorAll('h4').forEach(h => { if (/^parking questions$/i.test(h.textContent.trim())) h.remove(); });
+  box.querySelectorAll('a[href="#faqs"]').forEach(a => { const p = a.closest('p'); (p || a).remove(); });
+  /* Bus routes: fold them away (the website already does this for some towns) */
+  box.querySelectorAll('h4').forEach(h => { if (!/^by bus$/i.test(h.textContent.trim())) return;
+    const d = document.createElement('details'); d.innerHTML = '<summary>Bus routes</summary>';
+    let n = h.nextSibling; while (n && !(n.nodeType === 1 && /^(H3|H4)$/.test(n.tagName)) && !(n.nodeType === 1 && n.classList.contains('hp-cards'))) { const nx = n.nextSibling; d.appendChild(n); if (n.nodeType === 1 && /intalink/i.test(n.textContent)) { n = nx; break; } n = nx; }
+    h.replaceWith(d); });
+  /* "Parking at a glance" box */
+  box.querySelectorAll('h4').forEach(h => { if (!/at a glance/i.test(h.textContent)) return; const ul = h.nextElementSibling;
+    if (ul && ul.tagName === 'UL') { const w = document.createElement('div'); w.className = 'tgat'; h.before(w); w.append(h, ul); } });
+  /* Car park cards: pay-by-app codes become copy buttons; Directions sits with them */
+  box.querySelectorAll('.hp-card').forEach(c => {
+    const acts = document.createElement('div'); acts.className = 'acts';
+    c.querySelectorAll('p').forEach(p => { if (!/pay-by-app location code/i.test(p.textContent)) return;
+      const txt = (p.querySelector('strong') || p).textContent, btns = [];
+      txt.replace(/(\d{5,9})(?:\s*\(([^)]+)\))?/g, (m, code, lab) => { btns.push(`<button class="code" data-copy="${code}">${ic('copy')}${code}${lab ? ` <small>${esc(lab)}</small>` : ''}</button>`); });
+      if (btns.length) { const w = document.createElement('div'); w.className = 'codes'; w.innerHTML = `<b>Pay-by-app code · tap to copy</b><div>${btns.join('')}</div>`; p.replaceWith(w); } });
+    c.querySelectorAll('a.hp-dir').forEach(a => { a.innerHTML = ic('pin') + 'Directions'; acts.appendChild(a); });
+    if (acts.children.length) c.appendChild(acts); });
+  /* Split into sections at each <h3> */
+  let cur = null;
+  [...box.childNodes].forEach(n => {
+    if (n.nodeType === 1 && n.tagName === 'H3') { const title = n.textContent.trim(); if (!title) return; cur = { title, el: document.createElement('div') }; out.sections.push(cur); return; }
+    if (!cur) { if (n.nodeType === 3 && !n.textContent.trim()) return; cur = { title: 'About', el: document.createElement('div') }; out.sections.push(cur); }
+    cur.el.appendChild(n);
+  });
+  out.sections = out.sections.map(x => { const t = x.title;
+    const id = /parking|getting there/i.test(t) ? 'parking' : /market/i.test(t) ? 'markets' : /shop/i.test(t) ? 'shops' : /landmark|nearby|places/i.test(t) ? 'landmarks' : 'g' + Math.abs([...t].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7));
+    return { id, title: t, html: x.el.innerHTML.trim() }; }).filter(x => x.html);
+  return out;
+}
 function TownPage(t){
   const ds = deals.filter(d => d.towns.includes(t.id));
   const bizs = Object.values(cos).filter(c => c.towns.includes(t.id));
-  const sections = [];
-  if (t.guide) {
-    const parts = t.guide.split(/<h3[^>]*>/).slice(1);
-    parts.forEach(p => { const [h, ...rest] = p.split('</h3>'); sections.push([h.replace(/<[^>]+>/g,''), rest.join('</h3>')]); });
-  }
+  const tg = (TG && TG.towns && TG.towns[t.id]) || null;
+  const g = townGuide(tg ? tg.guide : t.guide);
+  const gl = (tg && tg.glance) || {};
+  const near = ((tg && tg.nearby) || []).filter(n => towns[n.id]);
+  const glRows = [['m','Market'],['p','Parking'],['t','Travel']].filter(([k]) => gl[k]);
+  const jumpName = { parking:'Parking & travel', markets:'Markets', shops:'Shops', landmarks:'Places to visit' };
+  const jumps = g.sections.filter(x => jumpName[x.id]).map(x => [x.id, jumpName[x.id]]);
+  if (g.faqs.length) jumps.push(['faqs', 'FAQs']);
+  const openFirst = g.sections.some(x => x.id === 'parking') ? 'parking' : (g.sections[0] || {}).id;
   return `<div class="view detail" data-detail>
   <div class="dtop"><button class="cb" data-act="back" aria-label="Back">${ic('back')}</button><button class="cb" data-share="${esc(t.link)}" aria-label="Share">${ic('share')}</button></div>
   <div class="tband"><h1>${esc(t.name)}</h1><p>${esc(towns[t.parent] ? towns[t.parent].name : 'Hertfordshire')} · ${ds.length} deal${ds.length===1?'':'s'} · ${bizs.length} business${bizs.length===1?'':'es'}</p></div><div class="tline"></div>
+  ${jumps.length > 1 ? `<div class="jump">${jumps.map(([id, l]) => `<button data-jump="${id}">${l}</button>`).join('')}</div>` : ''}
+  ${glRows.length ? `<div class="glance"><h3>${esc(t.name)} at a glance</h3><dl>${glRows.map(([k, l]) => `<div><dt>${l}</dt><dd>${esc(gl[k])}</dd></div>`).join('')}</dl></div>` : ''}
   ${t.intro ? `<div class="dbody"><div class="prose">${paras(t.intro)}</div></div>` : ''}
   ${ds.length ? sec(`Deals in ${esc(t.name)}`, `<div class="hs">${ds.map(card).join('')}</div>`) : `<p class="note" style="margin-top:18px">No deals in ${esc(t.name)} yet. Add it to your towns in My Herts and we’ll let you know when the first one arrives.</p>`}
-  ${sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${sections.map(([h, b], i) => `<details class="acc" ${i===0?'open':''}><summary>${esc(h)} ${ic('down')}</summary><div class="prose art" style="padding-left:0;padding-right:0">${b}</div>${/parking|getting there/i.test(h) ? `<a class="obtn" href="${esc(t.link)}#parking" target="_blank" rel="noopener" style="display:flex;margin:4px 0 14px">Every car park, price and pay-by-app code ${ic('ext')}</a>` : ''}</details>`).join('')}</div>`) : ''}
-  ${sec(sections.length ? `More about ${esc(t.name)}` : `${esc(t.name)} guide`, `<div class="dbody" style="padding-top:0;display:grid;gap:10px">
-    <a class="obtn" href="${esc(t.link)}#parking" target="_blank" rel="noopener" style="display:flex">Parking, prices and getting there ${ic('ext')}</a>
-    <a class="obtn" href="${esc(t.link)}#guide" target="_blank" rel="noopener" style="display:flex">Markets, shops and places to visit ${ic('ext')}</a>
-    <a class="obtn" href="${esc(t.link)}#faqs" target="_blank" rel="noopener" style="display:flex">Questions about ${esc(t.name)} ${ic('ext')}</a>
-    <p class="note" style="margin:0">Opens the full ${esc(t.name)} page on hertsdeals.co.uk.</p></div>`)}
+  ${g.sections.length ? sec('Local guide', `<div class="dbody" style="padding-top:0">${g.sections.map(x => `<details class="acc" id="tg-${x.id}" ${x.id===openFirst?'open':''}><summary>${esc(x.title)} ${ic('down')}</summary><div class="tg">${x.html}</div></details>`).join('')}</div>`) : ''}
   ${bizs.length ? sec('Local businesses', `<div class="rows">${bizs.map(c => `<a class="row" href="#biz-${c.id}">${logo(c)}<span class="tx"><b>${esc(c.name)}</b><span>${esc(c.tagline || '')}</span></span>${ic('right').replace('class="i"','class="i chev"')}</a>`).join('')}</div>`) : ''}
+  ${g.faqs.length ? `<div id="tg-faqs">${sec(`Questions about ${esc(t.name)}`, `<div class="dbody faqs" style="padding-top:0">${g.faqs.map(([q, a]) => `<details><summary>${esc(q)} ${ic('down')}</summary><p>${esc(a)}</p></details>`).join('')}</div>`)}</div>` : ''}
+  ${near.length ? sec(`Near ${esc(t.name)}`, `<div class="pills">${near.map(n => `<a class="pill" href="#town-${n.id}">${esc(towns[n.id].name)} <small>${n.miles} mile${n.miles===1?'':'s'}</small></a>`).join('')}</div>`) : ''}
+  <p class="note" style="margin:26px 18px 0">Prices and times can change, so always check the signs on the day. <a href="${esc(t.link)}" target="_blank" rel="noopener" style="color:var(--navy)">View this guide on hertsdeals.co.uk</a></p>
   </div>`;
 }
 function cleanGuide(g){
@@ -627,7 +752,7 @@ function renderTabs(){
   const n = newCount();
   document.getElementById('tabs').innerHTML = t.map(([k,i,l]) => `<button class="tab ${tab===k?'on':''}" data-go="${k}">${ic(i)}${l}${k==='mine'&&n?`<i>${n > 9 ? '9+' : n}</i>`:''}</button>`).join('');
 }
-function openDetail(html){ root.querySelectorAll('[data-detail],[data-cta]').forEach(e => e.remove()); root.insertAdjacentHTML('beforeend', html); detail = true; }
+function openDetail(html, keep){ const old = root.querySelector('[data-detail]'), y = keep && old ? old.scrollTop : 0; root.querySelectorAll('[data-detail],[data-cta]').forEach(e => e.remove()); root.insertAdjacentHTML('beforeend', html); detail = true; if (y) { const v = root.querySelector('[data-detail]'); if (v) v.scrollTop = y; } }
 function closeDetail(){ root.querySelectorAll('[data-cta]').forEach(e => e.remove()); const v = root.querySelector('[data-detail]'); if (v) { v.classList.add('leaving'); setTimeout(() => v.remove(), 220); } detail = false; }
 function route(){
   const h = location.hash.slice(1); let m;
@@ -641,6 +766,7 @@ function route(){
   if (k !== tab || !root.querySelector('.view[data-tab]')) { tab = k; renderTab(); }
   if (detail) closeDetail();
 }
+function copyOld(v){ const t = document.createElement('textarea'); t.value = v; t.setAttribute('readonly',''); t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch(e){} t.remove(); }
 function toast(m){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.getElementById('shell').appendChild(t); setTimeout(() => t.remove(), 1700); }
 function townSheet(){
   const s = document.createElement('div'); s.id = 'sheet';
@@ -651,7 +777,7 @@ function townSheet(){
   document.getElementById('shell').appendChild(s);
 }
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-save],[data-go],[data-act],[data-town],[data-cat],[data-share],[data-more],[data-fav],[data-mine],[data-obt],[data-obi],[data-ob]'); if (!el) return;
+  const el = e.target.closest('[data-copy],[data-jump],[data-save],[data-go],[data-act],[data-town],[data-cat],[data-share],[data-more],[data-fav],[data-mine],[data-obt],[data-obi],[data-ob]'); if (!el) return;
   if (el.dataset.obt || el.dataset.obi) { const id = +(el.dataset.obt || el.dataset.obi), set = el.dataset.obt ? ob.towns : ob.interests;
     set.has(id) ? set.delete(id) : set.add(id); el.classList.toggle('on', set.has(id)); return; }
   if (el.dataset.ob) { const a = el.dataset.ob;
@@ -679,6 +805,9 @@ document.addEventListener('click', e => {
   if (el.dataset.share) { const url = el.dataset.share;
     if (window.hdNative && hdNative.share) hdNative.share(url); else if (navigator.share) navigator.share({ url }).catch(() => {}); else navigator.clipboard?.writeText(url).then(() => toast('Link copied')); return; }
   if (el.dataset.more) { const b = document.getElementById(el.dataset.more); b.classList.remove('clamp'); el.remove(); return; }
+  if (el.dataset.copy) { const v = el.dataset.copy; const done = () => toast('Code ' + v + ' copied');
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done).catch(() => { copyOld(v); done(); }); else { copyOld(v); done(); } return; }
+  if (el.dataset.jump) { const t = document.getElementById('tg-' + el.dataset.jump); if (t) { if (t.tagName === 'DETAILS') t.open = true; t.scrollIntoView({ behavior:'smooth', block:'start' }); } return; }
   if (el.dataset.go) { location.hash = el.dataset.go; return; }
   if (el.dataset.cat !== undefined) { dealCat = +el.dataset.cat; renderTab(); return; }
   if (el.dataset.town !== undefined) { townSel = +el.dataset.town; store.set('town', townSel); document.getElementById('sheet')?.remove(); renderTab(); return; }
@@ -688,13 +817,13 @@ document.addEventListener('click', e => {
 });
 window.addEventListener('hashchange', () => { try { sessionStorage.setItem('hd_nav','1'); } catch(e){} route(); });
 
-function start(data){ window.hdNative && hdNative.ready(); index(data); const h = location.hash.slice(1); if (['deals','towns','guides','search'].includes(h)) tab = h; renderTab(); route();
+function start(data){ window.hdNative && hdNative.ready(); index(data); tgSync(data.towns_version); const h = location.hash.slice(1); if (['deals','towns','guides','search'].includes(h)) tab = h; renderTab(); route();
   if (!prefs.onboarded) showOb(['towns','interests','notify'], 'welcome'); else syncPush(); }
 const cached = store.get('feed', null);
 if (cached) { try { start(cached); } catch (e) { window.hdNative && hdNative.ready(); } }
 fetch(FEED, { credentials:'omit' }).then(r => r.json()).then(data => {
   store.set('feed', data);
-  if (!cached) start(data); else if (data.generated !== cached.generated) { index(data); if (!detail) renderTab(); }
+  if (!cached) start(data); else { tgSync(data.towns_version); if (data.generated !== cached.generated || JSON.stringify(data.featured) !== JSON.stringify(cached.featured)) { index(data); if (!detail) renderTab(); } }
 }).catch(() => { if (cached) return;
   fetch('feed.json').then(r => r.json()).then(start).catch(() => { window.hdNative && hdNative.ready(); root.innerHTML = '<div class="empty"><b>You’re offline</b>Connect to the internet to load local deals.</div>'; }); });
 /* Opens a deal from a notification. A brand-new deal may not be in the saved copy yet, so fetch the latest first. */
