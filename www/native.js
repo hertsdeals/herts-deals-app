@@ -19,6 +19,8 @@
     push: makePush()
   };
   if (!isNative) return;
+  /* Safety net: never leave the splash screen up, even if the app fails to start. */
+  setTimeout(() => window.hdNative.ready(), 5000);
 
   /* Push notifications (Firebase Cloud Messaging).
      Each phone follows "topics": town_<id>, biz_<id>, cat_<id> and "all".
