@@ -12,9 +12,10 @@
  * - Each deal is only ever sent once.
  * - Nothing happens on page views, so it cannot slow the site down.
  *
- * Setup: add this line to wp-config.php (the file path is where you uploaded the Firebase key, outside public_html):
- *   define( 'HD_FCM_SERVICE_ACCOUNT', '/home/YOURACCOUNT/herts-deals-firebase.json' );
- * Until that line exists, this snippet does nothing.
+ * Setup: Tools > App notifications > upload the Firebase service account key (.json).
+ * It is stored in the database (not autoloaded, never shown again). Alternatively define
+ * HD_FCM_SERVICE_ACCOUNT in wp-config.php as a file path or the JSON itself.
+ * Until a key is installed, this snippet does nothing.
  *
  * Status and recent sends: Tools > App notifications.
  */
@@ -27,14 +28,17 @@ defined( 'HD_PUSH_SUMMARY_AT' ) || define( 'HD_PUSH_SUMMARY_AT', 3 );  // deals 
 
 /* ---------- Firebase key ---------- */
 
-function hd_push_account() {
+function hd_push_account( $reset = false ) {
 	static $acc = null;
-	if ( null !== $acc ) { return $acc; }
+	if ( null !== $acc && ! $reset ) { return $acc; }
 	$acc = false;
-	if ( ! defined( 'HD_FCM_SERVICE_ACCOUNT' ) || ! HD_FCM_SERVICE_ACCOUNT ) { return $acc; }
-	$raw = HD_FCM_SERVICE_ACCOUNT;
-	if ( '{' !== substr( ltrim( $raw ), 0, 1 ) ) {
-		$raw = is_readable( $raw ) ? file_get_contents( $raw ) : '';
+	if ( defined( 'HD_FCM_SERVICE_ACCOUNT' ) && HD_FCM_SERVICE_ACCOUNT ) {
+		$raw = HD_FCM_SERVICE_ACCOUNT;
+		if ( '{' !== substr( ltrim( $raw ), 0, 1 ) ) {
+			$raw = is_readable( $raw ) ? file_get_contents( $raw ) : '';
+		}
+	} else {
+		$raw = get_option( 'hd_fcm_service_account', '' );
 	}
 	$j = json_decode( (string) $raw, true );
 	if ( is_array( $j ) && ! empty( $j['client_email'] ) && ! empty( $j['private_key'] ) && ! empty( $j['project_id'] ) ) {
@@ -212,14 +216,60 @@ add_action( 'hd_push_run', function () {
 
 /* ---------- Tools > App notifications ---------- */
 
+/* Upload or remove the Firebase key (admins only). */
+add_action( 'admin_post_hd_push_key', function () {
+	if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'Not allowed' ); }
+	check_admin_referer( 'hd_push_key' );
+	$back = admin_url( 'tools.php?page=hd-app-notifications' );
+	if ( ! empty( $_POST['remove'] ) ) {
+		delete_option( 'hd_fcm_service_account' );
+		delete_transient( 'hd_push_token' );
+		hd_push_log( 'Firebase key removed' );
+		wp_safe_redirect( add_query_arg( 'hd_msg', 'removed', $back ) ); exit;
+	}
+	$f   = isset( $_FILES['hd_key'] ) ? $_FILES['hd_key'] : null;
+	$raw = ( $f && empty( $f['error'] ) && $f['size'] > 0 && $f['size'] < 20000 && is_uploaded_file( $f['tmp_name'] ) ) ? file_get_contents( $f['tmp_name'] ) : '';
+	$j   = json_decode( (string) $raw, true );
+	if ( ! is_array( $j ) || ( $j['type'] ?? '' ) !== 'service_account' || empty( $j['private_key'] ) || empty( $j['client_email'] ) || empty( $j['project_id'] ) ) {
+		wp_safe_redirect( add_query_arg( 'hd_msg', 'bad', $back ) ); exit;
+	}
+	$keep = array_intersect_key( $j, array_flip( array( 'type', 'project_id', 'private_key_id', 'private_key', 'client_email', 'client_id', 'token_uri' ) ) );
+	update_option( 'hd_fcm_service_account', wp_json_encode( $keep ), false );
+	delete_transient( 'hd_push_token' );
+	$test = hd_push_token_fresh();
+	hd_push_log( is_wp_error( $test ) ? 'Firebase key saved but Google refused it: ' . $test->get_error_message() : 'Firebase key installed and checked with Google' );
+	wp_safe_redirect( add_query_arg( 'hd_msg', is_wp_error( $test ) ? 'refused' : 'ok', $back ) ); exit;
+} );
+
+function hd_push_token_fresh() {
+	hd_push_account( true );
+	delete_transient( 'hd_push_token' );
+	return hd_push_token();
+}
+
 add_action( 'admin_menu', function () {
 	add_management_page( 'App notifications', 'App notifications', 'manage_options', 'hd-app-notifications', function () {
 		$acc  = hd_push_account();
 		$q    = get_option( 'hd_push_queue', array() );
 		$next = wp_next_scheduled( 'hd_push_run' );
 		$log  = get_option( 'hd_push_log', array() );
+		$msgs = array( 'ok' => 'Key installed and checked with Google. Notifications are on.', 'bad' => 'That file is not a Firebase service account key (.json). Nothing was saved.', 'refused' => 'The key was saved, but Google refused it. See Recent activity.', 'removed' => 'Key removed. Notifications are off.' );
+		$m    = isset( $_GET['hd_msg'] ) ? sanitize_key( $_GET['hd_msg'] ) : '';
 		echo '<div class="wrap"><h1>App notifications</h1>';
-		echo '<p><strong>Firebase key:</strong> ' . ( $acc ? 'installed (project ' . esc_html( $acc['project_id'] ) . ')' : 'not installed yet. Notifications are switched off until it is added to wp-config.php.' ) . '</p>';
+		if ( isset( $msgs[ $m ] ) ) { echo '<div class="notice notice-' . ( 'ok' === $m || 'removed' === $m ? 'success' : 'error' ) . '"><p>' . esc_html( $msgs[ $m ] ) . '</p></div>'; }
+		echo '<p><strong>Firebase key:</strong> ' . ( $acc ? 'installed (project ' . esc_html( $acc['project_id'] ) . ')' : 'not installed yet. Notifications are switched off until you upload it below.' ) . '</p>';
+		if ( ! defined( 'HD_FCM_SERVICE_ACCOUNT' ) ) {
+			echo '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" enctype="multipart/form-data" style="background:#fff;border:1px solid #ddd;padding:12px 16px;max-width:640px">';
+			wp_nonce_field( 'hd_push_key' );
+			echo '<input type="hidden" name="action" value="hd_push_key">';
+			if ( $acc ) {
+				echo '<p>The key is stored privately in the database and is never shown again.</p><p><button class="button" name="remove" value="1" onclick="return confirm(\'Remove the Firebase key? Notifications will stop.\')">Remove key</button></p>';
+			} else {
+				echo '<p><strong>Upload the Firebase key</strong> (Firebase console &gt; Project settings &gt; Service accounts &gt; Generate new private key). After uploading, delete the downloaded file from your computer.</p>';
+				echo '<p><input type="file" name="hd_key" accept=".json,application/json" required> <button class="button button-primary">Upload key</button></p>';
+			}
+			echo '</form>';
+		}
 		echo '<p><strong>Waiting to send:</strong> ' . count( $q ) . ( $next ? ' (next send ' . esc_html( wp_date( 'j M H:i', $next ) ) . ')' : '' ) . '</p>';
 		echo '<p>New deals are sent automatically when they go live, between 9am and 8pm. To send your own message (for example to everyone, or to one town), use the Firebase console: Messaging, then "New campaign", and choose the topic <code>all</code>, <code>town_ID</code> or <code>cat_ID</code>.</p>';
 		$tw = get_terms( array( 'taxonomy' => 'location', 'hide_empty' => false ) );

@@ -20,5 +20,5 @@ The iPhone and Android app for Herts Deals (hertsdeals.co.uk), a local guide to 
 - No accounts. Choices are stored on the phone: `hd_prefs` (towns, interests, notify, onboarded), `hd_favs` (favourite businesses), `hd_saved` (saved deals).
 - First open shows the welcome screens (towns, interests, notifications). Settings is at `#settings`; the "My Herts" tab has For you / Favourites / Saved.
 - Push uses `@capacitor-firebase/messaging` with Firebase topics: `all`, `town_<location id>`, `biz_<company id>`, `cat_<category id>`. Logic is in `www/native.js` (`hdNative.push`).
-- The website sends a notification when a deal goes live: Code Snippet "Herts Deals app: push notifications" (copy in `website/push-notifications-snippet.php`). It needs `HD_FCM_SERVICE_ACCOUNT` in wp-config.php and does nothing without it. Quiet hours 8pm to 9am. Status at Tools > App notifications.
+- The website sends a notification when a deal goes live: Code Snippet "Herts Deals app: push notifications" (copy in `website/push-notifications-snippet.php`). The Firebase key is uploaded at Tools > App notifications (stored in the option `hd_fcm_service_account`, or `HD_FCM_SERVICE_ACCOUNT` in wp-config.php); it does nothing without a key. Quiet hours 8pm to 9am. Status at Tools > App notifications.
 - Never commit the Firebase service account key.
